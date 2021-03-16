@@ -1,6 +1,6 @@
 import unittest
 import time
-from src.game_state_manager import *
+from agagla.game_state_manager import *
 
 class GSMTestCase(unittest.TestCase):
     def setUp(self):
@@ -10,29 +10,29 @@ class GSMTestCase(unittest.TestCase):
         # tests that state changes when conditions for change are met
         self.assertEqual(self.gsm.get_state(), GameState.menu)
         self.gsm.start_game()
-        self.gsm._tick()
+        self.gsm._force_tick()
         self.assertEqual(self.gsm.get_state(), GameState.running)
         self.gsm.lives = 0
-        self.gsm._tick()
+        self.gsm._force_tick()
         self.assertEqual(self.gsm.get_state(), GameState.game_over)
 
     def test_kill_player(self):
         # tests that player dies and lives go down
         self.gsm.start_game()
-        self.gsm._tick()
+        self.gsm._force_tick()
         old_lives = self.gsm.lives
-        self.gsm.get_player_ship().setHealth(0)
-        self.gsm._tick()
-        self.assertEqual(self.gsm.lives, old_lives-1)
+        self.gsm.get_player_ship().set_health(0)
+        self.gsm._force_tick()
+        self.assertEqual(old_lives - 1, self.gsm.lives)
 
     def test_score_increase(self):
         # tests that score goes up when an enemy dies
         self.gsm.start_game()
-        self.gsm._tick()
+        self.gsm._force_tick()
         old_score = self.gsm.game_score
-        self.gsm.get_enemies()[0].setHealth(0)
-        self.gsm.tick()
-        self.assertGreater(old_score, self.gsm.game_score)
+        self.gsm.get_enemies()[0].set_health(0)
+        self.gsm._force_tick()
+        self.assertGreater(self.gsm.game_score, old_score)
 
     def test_tick_timing(self):
         # tests that ticking is locked to the tick rate
@@ -43,7 +43,7 @@ class GSMTestCase(unittest.TestCase):
             if self.gsm._tick():
                 successful_ticks += 1
 
-        self.assertEqual((time.time()-start_time)//(1/self.gsm.tick_rate), successful_ticks)
+        self.assertEqual((time.time() - start_time) // (1 / self.gsm.tick_rate), successful_ticks)
 
     def tearDown(self):
         self.gsm = None
