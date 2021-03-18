@@ -3,6 +3,7 @@ import time
 from agagla.menu import Menu
 from agagla.player_ship import PlayerShip
 from agagla.enemy import Enemy
+from agagla.input_manager import InputManager
 
 
 class GameState(enum.Enum):
@@ -13,6 +14,8 @@ class GameState(enum.Enum):
 
 
 class GameStateManager:
+    _instance = None
+
     def __init__(self):
         self.tick_rate = 60
         self._last_game_state = None
@@ -25,6 +28,11 @@ class GameStateManager:
                               GameState.running: self._running_fn,
                               GameState.game_over: self._game_over_fn}
         self._menu = None
+
+    def get_instance(self):
+        if GameStateManager._instance is None:
+            GameStateManager._instance = GameStateManager()
+        else: GameStateManager
 
     def _set_state(self, state):
         self._current_game_state = state
