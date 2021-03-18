@@ -17,6 +17,12 @@ class GameStateManager:
     _instance = None
 
     def __init__(self):
+
+        if GameStateManager._instance is not None:
+            raise Exception("This class is a singleton, please use get_instance().")
+        else:
+            GameStateManager._instance = self
+
         self.tick_rate = 60
         self._last_game_state = None
         self._current_game_state = GameState.menu
@@ -28,11 +34,17 @@ class GameStateManager:
                               GameState.running: self._running_fn,
                               GameState.game_over: self._game_over_fn}
         self._menu = None
+        self._input_manager = InputManager()
 
-    def get_instance(self):
+    @staticmethod
+    def get_instance():
         if GameStateManager._instance is None:
             GameStateManager._instance = GameStateManager()
-        else: GameStateManager
+
+        return GameStateManager._instance
+
+    def get_input_manager(self):
+        return self._input_manager
 
     def _set_state(self, state):
         self._current_game_state = state
@@ -114,6 +126,8 @@ class GameStateManager:
 
     def _tick(self):
         if time.time() >= self._last_tick_time + (1 / self.tick_rate):
+
+            self._input_manager.handle_events()
 
             self.manage_game()
 
