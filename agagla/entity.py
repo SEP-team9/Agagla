@@ -1,19 +1,26 @@
+from pygame.math import Vector2
+
+
 class Entity:
 
-    def __init__(self, type, x, y, health):
-        self.health = health
-        self.type = type
-        self.x = x
-        self.y = y
+    def __init__(self, x, y):
+        self._position = Vector2(x, y)
+        self._rotation = 0
 
     def get_pos(self):
-        return self.x, self.y
+        return self._position
 
-    def get_type(self):
-        return self.type
+    def set_pos(self, pos):
+        self._position = pos
 
-    def get_health(self):
-        return self.health
+    def get_rot(self):
+        return self._rotation
+
+    def set_rot(self, rot):
+        self._rotation = rot
 
     def render(self):
-        self.render()
+        pass
+
+    def tick(self):
+        pass
