@@ -1,17 +1,16 @@
-# placeholder stub for unit testing, delete this when implementing the actual class
 
-class Enemy:
-    def __init__(self):
+class Enemy(Ship):
+    def __init__(self, type, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = enemy1.png
         self.health = 1
+        self.type = type
+        self.rect = self.image.get_rect()
+        #self.rect = Rect(x, y, 10, 10)
 
-    def set_health(self, health):
-        self.health = health
-
-    def get_health(self):
-        return self.health
-
-    def tick(self):
-        return None
+    def get_type(self):
+        return self.type
 
     def render(self):
+        screen.blit(self.image, self.rect)
         return None
