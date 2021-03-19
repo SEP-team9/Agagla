@@ -4,11 +4,12 @@ from agagla.projectile import Projectile
 from agagla.ship import Ship
 
 VELOCITY = 5
-
+y = 500
 class PlayerShip(Ship):
-    def __init__(self, x, y):
+    def __init__(self):
         self.health = 2
-        self.rect = Rect(x, y, 10, 10)
+        self.x = 500
+        self.rect = pygame.Rect(self.x, y, 10, 10)
 
     def move(self):
         im = GameStateManager.get_input_manager()

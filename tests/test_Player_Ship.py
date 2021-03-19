@@ -7,7 +7,7 @@ class test_player_ship(unittest.TestCase):
 
     def setUp(self):
         pygame.init()
-        self.ps = PlayerShip(self, 100, 0)
+        self.ps = PlayerShip()
 
     def test_move_right(self):
         # Tests that the player ship moves right
