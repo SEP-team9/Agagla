@@ -1,9 +1,9 @@
 import enum
 import time
-from agagla.menu import Menu
-from agagla.player_ship import PlayerShip
-from agagla.enemy import Enemy
-from agagla.input_manager import InputManager
+from agagla import menu
+from agagla import player_ship
+from agagla import enemy
+from agagla import input_manager
 
 
 class GameState(enum.Enum):
@@ -34,7 +34,7 @@ class GameStateManager:
                               GameState.running: self._running_fn,
                               GameState.game_over: self._game_over_fn}
         self._menu = None
-        self._input_manager = InputManager()
+        self._input_manager = input_manager.InputManager()
 
     @staticmethod
     def get_instance():
@@ -96,16 +96,16 @@ class GameStateManager:
 
     def start_game(self):
         self.lives = 3
-        self.add_entity(PlayerShip())
+        self.add_entity(player_ship.PlayerShip())
 
         for i in range(0, 10):
-            self.add_entity(Enemy())
+            self.add_entity(enemy.Enemy())
 
         self._set_state(GameState.running)
 
     def _menu_fn(self, initial_run):
         if initial_run:
-            self._menu = Menu()
+            self._menu = menu.Menu()
 
         self._menu.render()
 
@@ -159,7 +159,7 @@ class GameStateManager:
 
         if ps is None:
             self.lives -= 1
-            self.add_entity(PlayerShip())
+            self.add_entity(player_ship.PlayerShip())
 
         if self.lives <= 0:
             self._set_state(GameState.game_over)
