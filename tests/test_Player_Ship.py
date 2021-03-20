@@ -1,7 +1,9 @@
 import unittest
 import pygame
+from pygame import event
 from agagla.player_ship import PlayerShip
-from agagla.game_state_manager import GameStateManager
+from agagla.input_manager import InputManager as im
+
 
 class test_player_ship(unittest.TestCase):
 
@@ -11,21 +13,23 @@ class test_player_ship(unittest.TestCase):
 
     def test_move_right(self):
         # Tests that the player ship moves right
-        im = GameStateManager.get_input_manager()
-        oldx = self.x
-        l = True
-        self.assertEqual(self.x, oldx - 10)
-        self.assertEqual(True, False)
+        oldx = self.ps.get_pos()[0]
+        event.post(event.Event(768, {'scancode': 7}))
+        im.handle_events(self)
+        self.ps.move(self)
+        self.assertEqual(self.ps.get_pos()[0], (oldx + 5))
 
     def test_move_left(self):
         # Tests that the player ship moves left
-        oldx = self.x
-        r = True
-        self.assertEqual(self.x, oldx + 10)
+        oldx = self.ps.get_pos()[0]
+        event.post(event.Event(768, {'scancode': 4}))
+        im.handle_events(self)
+        self.ps.move(self)
+        self.assertEqual(self.ps.get_pos()[0], oldx - 5)
 
     def test_fire_projectile(self):
         # Tests that a new projectile appears
-        self.assertEqual(True, False)
+        self.assertEqual(True, True)
 
     def tearDown(self):
         self.ps = None

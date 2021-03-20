@@ -1,28 +1,33 @@
 import pygame
+from pygame.math import Vector2
+from agagla import game_state_manager
 # from agagla.game_state_manager import GameStateManager
 from agagla.projectile import Projectile
 from agagla.ship import Ship
 
+init_position = Vector2(500, 500)
 VELOCITY = 5
 y = 500
 class PlayerShip(Ship):
     def __init__(self):
         self.health = 2
-        self.x = 500
-        self.rect = pygame.Rect(self.x, y, 10, 10)
+        self.set_pos(init_position)
+        self.rect = pygame.Rect(self.get_pos()[0], self.get_pos()[1], 10, 10)
 
     def move(self):
-        im = GameStateManager.get_input_manager()
-        l= im.get_left()
+        im = game_state_manager.GameStateManager.get_input_manager()
+        l = im.get_left()
         r = im.get_right()
+        x = self.get_pos()[0]
         if (l):
-            self.x -= VELOCITY
+            x -= VELOCITY
         elif (r):
-            self.x += VELOCITY
-        return self.x
+            x += VELOCITY
+        self.set_pos((x, y))
+        return None
 
     def fire_projectile(self):
-        im = GameStateManager.get_input_manager()
+        im = game_state_manager.GameStateManager.get_input_manager()
         f = im.get_fire()
         if (f):
             proj = Projectile(self)
