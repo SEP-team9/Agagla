@@ -5,38 +5,34 @@ from agagla import game_state_manager
 from agagla.projectile import Projectile
 from agagla.ship import Ship
 
-init_position = Vector2(500, 500)
-VELOCITY = 5
-y = 500
+
+inithealth = 2
+
 class PlayerShip(Ship):
-    def __init__(self):
-        self.health = 2
-        self.set_pos(init_position)
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.set_health(inithealth)
+        self.set_pos((x, y))
         self.rect = pygame.Rect(self.get_pos()[0], self.get_pos()[1], 10, 10)
 
-    def move(self):
-        im = game_state_manager.GameStateManager.get_input_manager()
-        l = im.get_left()
-        r = im.get_right()
-        x = self.get_pos()[0]
-        if (l):
-            x -= VELOCITY
-        elif (r):
-            x += VELOCITY
-        self.set_pos((x, y))
-        return None
+    def move(self, offset):
+        self.set_pos((self.get_pos()[0] + offset, self.get_pos()[1]))
 
     def fire_projectile(self):
-        im = game_state_manager.GameStateManager.get_input_manager()
-        f = im.get_fire()
-        if (f):
-            proj = Projectile(self)
-            proj.position = (self.x, self.y-10)
-            return proj
-        else:
-            return None
+        proj = Projectile(self.get_pos()[0], self.get_pos()[1] - 10)
+        return proj
 
     def render(self):
         pygame.Surface.blit(self.rect)
-        return None
 
+    def tick(self):
+        im = game_state_manager.GameStateManager.get_input_manager()
+        left = im.get_left()
+        right = im.get_right()
+        fire = im.get_fire()
+        if left:
+            self.move(-5)
+        elif right:
+            self.move(5)
+        elif fire:
+            self.fire_projectile()
