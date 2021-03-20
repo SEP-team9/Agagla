@@ -22,5 +22,8 @@ class Entity:
     def render(self):
         pass
 
+    def move(self, delta):
+        self.set_pos(self.get_pos()+delta)
+
     def tick(self):
         pass
