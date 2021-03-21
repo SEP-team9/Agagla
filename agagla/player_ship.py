@@ -5,13 +5,13 @@ from agagla import game_state_manager
 from agagla.projectile import Projectile
 from agagla.ship import Ship
 
-
-inithealth = 2
+VELOCITY = 5
+INITHEALTH = 2
 
 class PlayerShip(Ship):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.set_health(inithealth)
+        self.set_health(INITHEALTH)
         self.set_pos((x, y))
         self.rect = pygame.Rect(self.get_pos()[0], self.get_pos()[1], 10, 10)
 
@@ -31,8 +31,8 @@ class PlayerShip(Ship):
         right = im.get_right()
         fire = im.get_fire()
         if left:
-            self.move(-5)
+            self.move(-VELOCITY)
         elif right:
-            self.move(5)
+            self.move(VELOCITY)
         elif fire:
             self.fire_projectile()
