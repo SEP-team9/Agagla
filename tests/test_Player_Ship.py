@@ -9,19 +9,19 @@ class test_player_ship(unittest.TestCase):
         pygame.init()
         self.ps = PlayerShip(500, 500)
 
-    def test_move_right(self):
+    def test_move(self):
         # Tests that the player ship moves right
         oldx = self.ps.get_pos()[0]
         oldy = self.ps.get_pos()[1]
-        self.ps.move(5)
-        self.assertEqual(self.ps.get_pos()[0], (oldx + 5))
+        self.ps.move((self.ps.velocity, 0))
+        self.assertEqual(self.ps.get_pos()[0], (oldx+self.ps.velocity))
         self.assertEqual(self.ps.get_pos()[1], oldy)
 
         # Tests that the player ship moves left
         oldx = self.ps.get_pos()[0]
         oldy = self.ps.get_pos()[1]
-        self.ps.move(-5)
-        self.assertEqual(self.ps.get_pos()[0], oldx - 5)
+        self.ps.move((-self.ps.velocity, 0))
+        self.assertEqual(self.ps.get_pos()[0], oldx-self.ps.velocity)
         self.assertEqual(self.ps.get_pos()[1], oldy)
 
     def test_fire_projectile(self):
