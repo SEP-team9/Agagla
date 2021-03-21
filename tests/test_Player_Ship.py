@@ -13,14 +13,14 @@ class test_player_ship(unittest.TestCase):
         # Tests that the player ship moves right
         oldx = self.ps.get_pos()[0]
         oldy = self.ps.get_pos()[1]
-        self.ps.move((self.ps.velocity, 0))
+        self.ps.move(self.ps.velocity, 0)
         self.assertEqual(self.ps.get_pos()[0], (oldx+self.ps.velocity))
         self.assertEqual(self.ps.get_pos()[1], oldy)
 
         # Tests that the player ship moves left
         oldx = self.ps.get_pos()[0]
         oldy = self.ps.get_pos()[1]
-        self.ps.move((-self.ps.velocity, 0))
+        self.ps.move(-self.ps.velocity, 0)
         self.assertEqual(self.ps.get_pos()[0], oldx-self.ps.velocity)
         self.assertEqual(self.ps.get_pos()[1], oldy)
 

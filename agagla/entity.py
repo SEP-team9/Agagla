@@ -10,8 +10,8 @@ class Entity:
     def get_pos(self):
         return self._position
 
-    def set_pos(self, pos):
-        self._position = pos
+    def set_pos(self, x, y):
+        self._position = (x, y)
 
     def get_rot(self):
         return self._rotation
@@ -22,8 +22,8 @@ class Entity:
     def render(self):
         pass
 
-    def move(self, delta):
-        self.set_pos(self.get_pos()+delta)
+    def move(self, x, y):
+        self.set_pos(self.get_pos()[0]+x, self.get_pos()[1]+y)
 
     def tick(self):
         pass
