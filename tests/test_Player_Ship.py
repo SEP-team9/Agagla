@@ -1,12 +1,13 @@
 import unittest
 import pygame
 from agagla.player_ship import PlayerShip
+from pygame.math import Vector2
 
 class test_player_ship(unittest.TestCase):
 
     def setUp(self):
         pygame.init()
-        self.ps = PlayerShip(0,0)
+        self.ps = PlayerShip(Vector2(0,0))
 
     def test_move(self):
         # Test initial position
