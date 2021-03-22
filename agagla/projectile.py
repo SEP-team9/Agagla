@@ -1,22 +1,15 @@
-class Projectile:
-    def __init__(self):
-        self.position
-        self.rotation
+from agagla import entity
+from agagla import game_state_manager
 
-        #Determine a way to initialize the position and rotation attributes
+PROJECTILE_SPEED = 10
 
-    def set_position(self, position):
-        self.position = position
 
-    def get_position(self):
-        return self.position
+class Projectile(entity.Entity):
+    def __init__(self, position, rotation, parent = None):
+        super(Projectile, self).__init__(position)
+        self.set_rot(rotation)
+        self.parent = parent
 
-    def set_rotation(self, rotation):
-        self.rotation = rotation
-
-    def get_rotation(self):
-        return self.rotation
-
-    #I'm not sure if I'm doing this right.
-    #I'm trying to piece this together from our design class diagram and as far as I understand,
-    #I just need to define the position and rotation attributes and have a way for them to be called by other classes
+    def tick(self):
+        super(Projectile, self).tick()
+        self.move()

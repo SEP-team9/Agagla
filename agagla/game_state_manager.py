@@ -4,6 +4,9 @@ from agagla import menu
 from agagla import player_ship
 from agagla import enemy
 from agagla import input_manager
+from pygame.math import Vector2
+
+PLAYER_SPAWN = Vector2(100, 100)
 
 
 class GameState(enum.Enum):
@@ -96,10 +99,10 @@ class GameStateManager:
 
     def start_game(self):
         self.lives = 3
-        self.add_entity(player_ship.PlayerShip())
+        self.add_entity(player_ship.PlayerShip(PLAYER_SPAWN))
 
         for i in range(0, 10):
-            self.add_entity(enemy.Enemy())
+            self.add_entity(enemy.Enemy(Vector2(i*100+25, 500)))
 
         self._set_state(GameState.running)
 
@@ -159,7 +162,7 @@ class GameStateManager:
 
         if ps is None:
             self.lives -= 1
-            self.add_entity(player_ship.PlayerShip())
+            self.add_entity(player_ship.PlayerShip(Vector2(PLAYER_SPAWN.x, PLAYER_SPAWN.y)))
 
         if self.lives <= 0:
             self._set_state(GameState.game_over)

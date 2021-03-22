@@ -3,8 +3,8 @@ from pygame.math import Vector2
 
 class Entity:
 
-    def __init__(self, x, y):
-        self._position = Vector2(x, y)
+    def __init__(self, position):
+        self._position = position
         self._rotation = 0
 
     def get_pos(self):

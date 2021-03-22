@@ -1,14 +1,13 @@
 import random
-
 import pygame
-
 from agagla import ship
-
+from pygame.math import Vector2
+import os
 
 class Enemy(ship.Ship):
-    def __init__(self, x, y):
-        super().__init__(x, y)
-        enemy1 = 'enemy1.png'
+    def __init__(self, position):
+        super().__init__(position)
+        enemy1 = os.path.join('../data/enemy1.png')
         self.image = pygame.image.load(enemy1)
         self.health = 1
         self.velocity = 5
@@ -24,8 +23,8 @@ class Enemy(ship.Ship):
         return None
 
     def fire(self):
-        if random.randint(1,90) == 45:
-            self.spawn_projectile(0, 10, 0)
+        if random.randint(1, 90) == 45:
+            self.spawn_projectile(Vector2(0, 10), 0)
         return None
 
     def get_type(self):
