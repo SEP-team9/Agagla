@@ -12,9 +12,9 @@ class Enemy(ship.Ship):
         self.health = 1
         self.velocity = 5
         self.type = 1
-        self.rect = pygame.Rect(self.xPos(), 0, 10, 10)
+        self.rect = pygame.Rect(self.x_pos(), 0, 10, 10)
 
-    def xPos(self):
+    def x_pos(self):
         position = random.randint(10, 1910)
         return position
 
@@ -31,7 +31,7 @@ class Enemy(ship.Ship):
         return self.type
 
     def render(self):
-        pygame.Surface.blit(self.rect)
+        pygame.draw.rect(pygame.display.get_surface(), (255, 255, 255), self.rect)
         return None
 
     def tick(self):

@@ -13,11 +13,11 @@ class PlayerShip(Ship):
         super().__init__(position)
         self.set_health(INIT_HEALTH)
         self.velocity = VELOCITY
-        self.set_pos(INIT_X, INIT_Y)
+        self.set_pos(Vector2(INIT_X, INIT_Y))
         self.rect = pygame.Rect(self.get_pos()[0], self.get_pos()[1], 10, 10)
 
     def render(self):
-        pygame.Surface.blit(self.rect)
+        pygame.draw.rect(pygame.display.get_surface(), (255, 255, 255), self.rect)
 
     def tick(self):
         im = gsm.GameStateManager.get_instance().get_input_manager()

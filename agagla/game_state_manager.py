@@ -5,6 +5,7 @@ from agagla import player_ship
 from agagla import enemy
 from agagla import input_manager
 from pygame.math import Vector2
+import pygame
 
 PLAYER_SPAWN = Vector2(100, 100)
 
@@ -120,6 +121,7 @@ class GameStateManager:
         self._set_state(GameState.menu)
 
     def game_loop(self):
+        self._input_manager.handle_events()
         self.states_switch[self._current_game_state](not self._current_game_state == self._last_game_state)
         self._last_game_state = self._current_game_state
 
@@ -129,8 +131,6 @@ class GameStateManager:
 
     def _tick(self):
         if time.time() >= self._last_tick_time + (1 / self.tick_rate):
-
-            self._input_manager.handle_events()
 
             self.manage_game()
 
@@ -145,6 +145,8 @@ class GameStateManager:
         return False
 
     def _render_game(self):
+        pygame.display.get_surface().fill((0, 0, 0))
+
         for i in self._entities:
             i.render()
 
