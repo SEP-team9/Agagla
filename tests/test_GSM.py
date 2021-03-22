@@ -2,13 +2,16 @@ import unittest
 import pygame
 from agagla import game_state_manager
 from agagla.game_state_manager import GameState
+from agagla import __main__ as main
+
 import time
 
 
 class GSMTestCase(unittest.TestCase):
     def setUp(self):
+        main.init()
         pygame.init()
-        self.gsm = game_state_manager.GameStateManager.get_instance()
+        self.gsm = game_state_manager.GameStateManager()
 
     def test_state_changes(self):
         # tests that state changes when conditions for change are met

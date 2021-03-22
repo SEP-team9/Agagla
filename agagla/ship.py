@@ -1,5 +1,5 @@
 from agagla import entity
-from agagla import game_state_manager
+from agagla import shared_objects
 from agagla import projectile
 
 
@@ -19,5 +19,4 @@ class Ship(entity.Entity):
         self._health -= 1
 
     def spawn_projectile(self, offset, rotation):
-        game_state_manager.GameStateManager.get_instance().add_entity(projectile.Projectile(self.get_pos() + offset,
-                                                                                            rotation, self))
+        shared_objects.get_gsm().add_entity(projectile.Projectile(self.get_pos() + offset, rotation, self))
