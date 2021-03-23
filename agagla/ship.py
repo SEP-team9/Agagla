@@ -1,12 +1,12 @@
-from agagla.entity import Entity
-from agagla.game_state_manager import GameStateManager
-from agagla.projectile import Projectile
+from agagla import entity
+from agagla import shared_objects
+from agagla import projectile
 
 
-class Ship(Entity):
+class Ship(entity.Entity):
 
-    def __init__(self, x, y):
-        super().__init__(x, y)
+    def __init__(self, position, size):
+        super().__init__(position, size)
         self._health = 1
 
     def get_health(self):
@@ -19,4 +19,4 @@ class Ship(Entity):
         self._health -= 1
 
     def spawn_projectile(self, offset, rotation):
-        GameStateManager.get_instance().add_entity(Projectile(self.get_pos() + offset, rotation))
+        shared_objects.get_gsm().add_entity(projectile.Projectile(self.get_pos() + offset, rotation, self))

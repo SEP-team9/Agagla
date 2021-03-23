@@ -1,38 +1,36 @@
 import random
-
 import pygame
-
 from agagla import ship
+from pygame.math import Vector2
+import os
 
 
 class Enemy(ship.Ship):
-    def __init__(self, x, y):
-        super().__init__(x, y)
-        enemy1 = 'enemy1.png'
+    def __init__(self, position):
+        super().__init__(position, Vector2(10, 10))
+        enemy1 = os.path.join('../data/enemy1.png')
         self.image = pygame.image.load(enemy1)
         self.health = 1
-        self.velocity = 5
+        self.velocity = 1
         self.type = 1
-        self.rect = pygame.Rect(self.xPos(), 0, 10, 10)
-
-    def xPos(self):
-        position = random.randint(10, 1910)
-        return position
+        self.rect = pygame.Rect(self.get_pos().x, self.get_pos().y, 10, 10)
 
     def path(self):
-        self.rect.y = self.rect.y - self.velocity
+        self._position.y = self._position.y + self.velocity
+        self.rect = pygame.Rect(self.get_pos().x, self.get_pos().y, 10, 10)
         return None
 
     def fire(self):
-        if random.randint(1,90) == 45:
-            self.spawn_projectile(0, 10, 0)
+        if random.randint(1, 180) == 45:
+            self.spawn_projectile(Vector2(0, 10), 0)
         return None
 
     def get_type(self):
         return self.type
 
     def render(self):
-        pygame.Surface.blit(self.rect)
+        self.rect = pygame.Rect(self.get_pos().x, self.get_pos().y, 10, 10)
+        pygame.draw.rect(pygame.display.get_surface(), (255, 255, 255), self.rect)
         return None
 
     def tick(self):

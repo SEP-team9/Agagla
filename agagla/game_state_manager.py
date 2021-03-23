@@ -3,7 +3,10 @@ import time
 from agagla import menu
 from agagla import player_ship
 from agagla import enemy
-from agagla import input_manager
+from pygame.math import Vector2
+import pygame
+
+PLAYER_SPAWN = Vector2(100, 100)
 
 
 class GameState(enum.Enum):
@@ -14,14 +17,8 @@ class GameState(enum.Enum):
 
 
 class GameStateManager:
-    _instance = None
 
     def __init__(self):
-
-        if GameStateManager._instance is not None:
-            raise Exception("This class is a singleton, please use get_instance().")
-        else:
-            GameStateManager._instance = self
 
         self.tick_rate = 60
         self._last_game_state = None
@@ -34,17 +31,6 @@ class GameStateManager:
                               GameState.running: self._running_fn,
                               GameState.game_over: self._game_over_fn}
         self._menu = None
-        self._input_manager = input_manager.InputManager()
-
-    @staticmethod
-    def get_instance():
-        if GameStateManager._instance is None:
-            GameStateManager._instance = GameStateManager()
-
-        return GameStateManager._instance
-
-    def get_input_manager(self):
-        return self._input_manager
 
     def _set_state(self, state):
         self._current_game_state = state
@@ -91,15 +77,18 @@ class GameStateManager:
     def add_entity(self, e):
         self._entities.append(e)
 
+    def remove_entity(self, e):
+        self._entities.remove(e)
+
     def get_score(self):
         return self.game_score
 
     def start_game(self):
         self.lives = 3
-        self.add_entity(player_ship.PlayerShip())
+        self.add_entity(player_ship.PlayerShip(PLAYER_SPAWN))
 
-        for i in range(0, 10):
-            self.add_entity(enemy.Enemy())
+        for i in range(0, 15):
+            self.add_entity(enemy.Enemy(Vector2(i*100 + 200, 10)))
 
         self._set_state(GameState.running)
 
@@ -127,14 +116,16 @@ class GameStateManager:
     def _tick(self):
         if time.time() >= self._last_tick_time + (1 / self.tick_rate):
 
-            self._input_manager.handle_events()
-
             self.manage_game()
 
             for i in self._entities:
                 i.tick()
 
             time_off = (self._last_tick_time + (1 / self.tick_rate)) - time.time()
+
+            if time_off < 0:
+                time_off = 0
+
             self._last_tick_time = time.time() - time_off
 
             return True
@@ -142,6 +133,8 @@ class GameStateManager:
         return False
 
     def _render_game(self):
+        pygame.display.get_surface().fill((0, 0, 0))
+
         for i in self._entities:
             i.render()
 
@@ -159,7 +152,7 @@ class GameStateManager:
 
         if ps is None:
             self.lives -= 1
-            self.add_entity(player_ship.PlayerShip())
+            self.add_entity(player_ship.PlayerShip(Vector2(PLAYER_SPAWN.x, PLAYER_SPAWN.y)))
 
         if self.lives <= 0:
             self._set_state(GameState.game_over)

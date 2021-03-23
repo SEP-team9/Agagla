@@ -1,34 +1,37 @@
 import pygame
-from agagla import game_state_manager as gsm
+from agagla import shared_objects
 from agagla.ship import Ship
+from pygame.math import Vector2
 
 VELOCITY = 5
-INITHEALTH = 2
-INITX = (1920 / 2)
-INITY = (1080 - 30)
+INIT_HEALTH = 2
+INIT_X = (1920 / 2)
+INIT_Y = (1080 - 30)
+
 
 class PlayerShip(Ship):
-    def __init__(self, x, y):
-        super().__init__(x, y)
-        self.set_health(INITHEALTH)
+    def __init__(self, position):
+        super().__init__(position, Vector2(10, 10))
+        self.set_health(INIT_HEALTH)
         self.velocity = VELOCITY
-        self.set_pos(INITX, INITY)
+        self.set_pos(Vector2(INIT_X, INIT_Y))
         self.rect = pygame.Rect(self.get_pos()[0], self.get_pos()[1], 10, 10)
 
     def render(self):
-        pygame.Surface.blit(self.rect)
+        self.rect = pygame.Rect(self.get_pos()[0], self.get_pos()[1], 10, 10)
+        pygame.draw.rect(pygame.display.get_surface(), (255, 255, 255), self.rect)
 
     def tick(self):
-        im = gsm.GameStateManager.get_input_manager()
+        im = shared_objects.get_im()
         left = im.get_left()
         right = im.get_right()
         fire = im.get_fire()
-        self._calculateMovement(left, right, fire)
+        self._calculate_movement(left, right, fire)
 
-    def _calculateMovement(self, left, right, fire):
+    def _calculate_movement(self, left, right, fire):
         if left:
-            self.move(-self.velocity, 0)
+            self.move(Vector2(-self.velocity, 0))
         elif right:
-            self.move(self.velocity, 0)
+            self.move(Vector2(self.velocity, 0))
         elif fire:
-            self.spawn_projectile((0, -10), 0)
+            self.spawn_projectile((0, -10), 180)
