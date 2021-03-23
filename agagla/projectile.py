@@ -1,5 +1,4 @@
 from agagla import entity
-from agagla import game_state_manager
 from pygame.math import Vector2
 from agagla import shared_objects
 import pygame
