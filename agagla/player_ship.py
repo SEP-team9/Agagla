@@ -2,16 +2,16 @@ import pygame
 from agagla import shared_objects
 from agagla.ship import Ship
 from pygame.math import Vector2
-from agagla import __main__ as main
 
 VELOCITY = 5
 INIT_HEALTH = 2
 INIT_X = (1920 / 2)
 INIT_Y = (1080 - 30)
 
+
 class PlayerShip(Ship):
     def __init__(self, position):
-        super().__init__(position)
+        super().__init__(position, Vector2(10, 10))
         self.set_health(INIT_HEALTH)
         self.velocity = VELOCITY
         self.set_pos(Vector2(INIT_X, INIT_Y))
@@ -34,4 +34,4 @@ class PlayerShip(Ship):
         elif right:
             self.move(Vector2(self.velocity, 0))
         elif fire:
-            self.spawn_projectile((0, -10), 0)
+            self.spawn_projectile((0, -10), 180)

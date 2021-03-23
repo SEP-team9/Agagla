@@ -5,8 +5,8 @@ from agagla import projectile
 
 class Ship(entity.Entity):
 
-    def __init__(self, position):
-        super().__init__(position)
+    def __init__(self, position, size):
+        super().__init__(position, size)
         self._health = 1
 
     def get_health(self):

@@ -77,6 +77,9 @@ class GameStateManager:
     def add_entity(self, e):
         self._entities.append(e)
 
+    def remove_entity(self, e):
+        self._entities.remove(e)
+
     def get_score(self):
         return self.game_score
 
@@ -84,8 +87,8 @@ class GameStateManager:
         self.lives = 3
         self.add_entity(player_ship.PlayerShip(PLAYER_SPAWN))
 
-        for i in range(0, 10):
-            self.add_entity(enemy.Enemy(Vector2(i*100+25, 500)))
+        for i in range(0, 15):
+            self.add_entity(enemy.Enemy(Vector2(i*100 + 200, 10)))
 
         self._set_state(GameState.running)
 
@@ -119,6 +122,10 @@ class GameStateManager:
                 i.tick()
 
             time_off = (self._last_tick_time + (1 / self.tick_rate)) - time.time()
+
+            if time_off < 0:
+                time_off = 0
+
             self._last_tick_time = time.time() - time_off
 
             return True
