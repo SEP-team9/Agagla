@@ -31,7 +31,7 @@ class PlayerShip(Ship):
     def _calculate_movement(self, left, right, fire):
         if left:
             self.move(Vector2(-self.velocity, 0))
-        elif right:
+        if right:
             self.move(Vector2(self.velocity, 0))
-        elif fire:
+        if fire:
             self.spawn_projectile((0, -10), 180)
