@@ -35,6 +35,7 @@ class PlayerShip(Ship):
             self.move(Vector2(-self.velocity, 0))
         if right:
             self.move(Vector2(self.velocity, 0))
+
         if fire and not self.firing:
             self.firing = True
 
