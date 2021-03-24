@@ -23,7 +23,7 @@ class Projectile(entity.Entity):
 
         for i in shared_objects.get_gsm().get_ships():
             distance = self.get_pos()-i.get_pos()
-            if abs(distance.x) < i.get_size().x and abs(distance.y) < i.get_size().y:
+            if abs(distance.x) < i.get_size().x and abs(distance.y) < i.get_size().y and i is not self.parent:
                 i.damage()
                 self.die()
 
