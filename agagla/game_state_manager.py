@@ -54,7 +54,7 @@ class GameStateManager:
             if type(i).__name__ == 'Projectile':
                 projectiles.append(i)
 
-            return projectiles
+        return projectiles
 
     def get_player_ship(self):
         for i in self._entities:
