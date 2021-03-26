@@ -18,6 +18,7 @@ class HighScoreDatabase:
             self._close_connection(connection, cursor)
             return True
         else:
+            self._close_connection(connection, cursor)
             return False
 
     def get_high_score(self):
