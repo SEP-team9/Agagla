@@ -1,8 +1,4 @@
 import unittest
-from agagla import high_score_database
-import pymysql
-from pymysql import Error
-
 from agagla.high_score_database import HighScoreDatabase
 
 
@@ -12,12 +8,16 @@ class MyTestCase(unittest.TestCase):
 
     def test_get_scores(self):
         scores = self.hsdb.get_high_score()
-        self.assertIsNot(scores,0)
+        self.assertEqual(len(scores), 10)
 
     def test_add_score(self):
-        scores = self.hsdb.get_high_score()
-        didit= self.hsdb.add_high_score('test2', 500)
+        didit= self.hsdb.add_high_score('test_no_add', 1)
+        self.assertEqual(didit, False)
+        didit= self.hsdb.add_high_score('test_add', 500)
         self.assertEqual(didit, True)
+
+    def tearDown(self):
+        self.hsdb = None
 
 if __name__ == '__main__':
     unittest.main()
