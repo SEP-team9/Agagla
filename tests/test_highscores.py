@@ -16,7 +16,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_add_score(self):
         scores = self.hsdb.get_high_score()
-        didit= self.hsdb.add_high_score('test1', 100)
+        didit= self.hsdb.add_high_score('test2', 500)
         self.assertEqual(didit, True)
 
 if __name__ == '__main__':
