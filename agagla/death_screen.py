@@ -38,7 +38,9 @@ class DeathScreen:
 
             text_surface = self.font_small.render(self.char_selection(self, 'A'), False, (255, 255, 255))
             self.screen.blit(text_surface, ((WINDOW_WIDTH / 2) + 50, (WINDOW_HEIGHT / 2) - 300))
-        return None
+
+
+        return self.gsm.game_score
 
     def char_selection(self, ch):
         if self.im.get_right():
@@ -47,11 +49,13 @@ class DeathScreen:
                 ch = chr(97)
             if ord(ch) == 123:
                 ch = chr(65)
+        self.char_selection(self, ch)
         if self.im.get_left():
             ch = chr(ord(ch) - 1)
             if ord(ch) == 64:
                 ch = chr(122)
             if ord(ch) == 96:
                 ch = chr(90)
+        self.char_selection(self, ch)
         if self.im.get_fire():
             return ch
