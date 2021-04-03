@@ -14,7 +14,7 @@ INIT_Y = (1080 - 75)
 
 class PlayerShip(Ship):
     def __init__(self, position):
-        super().__init__(position, Vector2(35, 35))
+        super().__init__(position, Vector2(50, 25))
         self.set_health(INIT_HEALTH)
         self.velocity = VELOCITY
         self.set_pos(Vector2(INIT_X, INIT_Y))

@@ -26,8 +26,8 @@ class GameStateManager:
         self.tick_rate = 60
         self._last_game_state = None
         self._current_game_state = GameState.menu
-        self.game_score = 700
-        self.lives = 2
+        self.game_score = 0
+        self.lives = 3
         self._entities = []
         self._last_tick_time = time.time()
         self.states_switch = {GameState.menu: self._menu_fn,
@@ -88,7 +88,6 @@ class GameStateManager:
         return self.game_score
 
     def start_game(self):
-        self.lives = 1
         self.add_entity(player_ship.PlayerShip(PLAYER_SPAWN))
 
         for i in range(0, 15):
