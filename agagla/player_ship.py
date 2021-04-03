@@ -6,7 +6,7 @@ from agagla.ship import Ship
 from pygame.math import Vector2
 
 VELOCITY = 5
-INIT_HEALTH = 1
+INIT_HEALTH = 2
 MAX_PROJECTILES = 3
 INIT_X = (1920 / 2)
 INIT_Y = (1080 - 75)
