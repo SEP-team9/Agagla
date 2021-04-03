@@ -17,13 +17,26 @@ class DeathScreen:
         self.blink = False
         self.gsm = shared_objects.get_gsm()
         self.im = shared_objects.get_im()
+        self.hsdb = shared_objects.get_hsdb()
         self.btn_pressed = False
         self.ch = 'A'
         self.name = ''
-        self.time_of_last_key = time.time() + WAIT_TIME_TO_END
-
+        self.score = self.gsm.game_score
+        self.time_of_last_key = time.time()
+        self.h_scores = self.hsdb.get_high_score()
+        self.hs_rank = 10
+        for i in range(0, len(self.h_scores)):
+            print(self.h_scores[i][2])
+            print(self.score)
+            if self.h_scores[i][2] < self.score:
+                self.hs_rank = i
+                break
+        print(self.h_scores)
+        print(self.score)
+        print(self.hs_rank)
 
     def render(self):
+
         self.screen.fill((0, 0, 0))
         text_surface = self.font_large.render('Game Over', False, (255, 255, 255))
         self.screen.blit(text_surface, ((WINDOW_WIDTH / 2) - (text_surface.get_width() / 2), (WINDOW_HEIGHT / 2) - 100))
@@ -34,15 +47,16 @@ class DeathScreen:
             self.blink = ~self.blink
             self.last_time = time_ms
 
-        text_surface = self.font_small.render(self.name + (self.ch if self.blink else '    '), False, (255, 255, 255))
-        self.screen.blit(text_surface, (((WINDOW_WIDTH-text_surface.get_width()) / 2), (WINDOW_HEIGHT / 2) - 300))
+        if self.hs_rank < 10:
+            text_surface = self.font_small.render(self.name + (self.ch if self.blink else '    '), False, (255, 255, 255))
+            self.screen.blit(text_surface, (((WINDOW_WIDTH-text_surface.get_width()) / 2), (WINDOW_HEIGHT / 2) - 300))
 
-        self.char_selection()
-
-        print(time.time() - self.time_of_last_key)
+            self.char_selection()
 
         if time.time() - self.time_of_last_key > WAIT_TIME_TO_END:
             print(self.name)
+            if self.hs_rank <= 10:
+                self.hsdb.add_high_score(self.name, self.score)
             self.gsm.submitted_hs()
 
     def char_selection(self):

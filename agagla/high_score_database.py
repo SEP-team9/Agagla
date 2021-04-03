@@ -1,6 +1,7 @@
 import pymysql
 from pymysql import Error
 
+
 class HighScoreDatabase:
 
     def add_high_score(self, name, score):
