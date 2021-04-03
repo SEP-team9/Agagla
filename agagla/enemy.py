@@ -7,7 +7,7 @@ import os
 
 class Enemy(ship.Ship):
     def __init__(self, position):
-        super().__init__(position, Vector2(10, 10))
+        super().__init__(position, Vector2(50, 50))
         path = os.path.join('../data/enemy1.png')
         enemy1 = pygame.image.load(path)
         enemy1 = pygame.transform.scale(enemy1, (50, 50))
