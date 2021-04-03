@@ -29,7 +29,9 @@ class Menu:
 
         if self.blink:
             text_surface = self.font_small.render('Press    fire    to    start', False, (255, 255, 255))
-            self.screen.blit(text_surface, ((WINDOW_WIDTH / 2) - (text_surface.get_width() / 2), (WINDOW_HEIGHT / 2) - 100))
+            self.screen.blit(text_surface,
+                             ((WINDOW_WIDTH / 2) - (text_surface.get_width() / 2),
+                              (WINDOW_HEIGHT / 2) - 100))
 
         if shared_objects.get_im().get_fire():
             self.gsm.start_game()
