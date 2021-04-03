@@ -4,6 +4,7 @@ from agagla import shared_objects
 
 WINDOW_WIDTH = 1920
 WINDOW_HEIGHT = 1080
+WAIT_TIME_TO_END = 10
 
 
 class DeathScreen:
@@ -16,6 +17,11 @@ class DeathScreen:
         self.blink = False
         self.gsm = shared_objects.get_gsm()
         self.im = shared_objects.get_im()
+        self.btn_pressed = False
+        self.ch = 'A'
+        self.name = ''
+        self.time_of_last_key = time.time() + WAIT_TIME_TO_END
+
 
     def render(self):
         self.screen.fill((0, 0, 0))
@@ -28,34 +34,42 @@ class DeathScreen:
             self.blink = ~self.blink
             self.last_time = time_ms
 
-        if self.blink:
+        text_surface = self.font_small.render(self.name + (self.ch if self.blink else '    '), False, (255, 255, 255))
+        self.screen.blit(text_surface, (((WINDOW_WIDTH-text_surface.get_width()) / 2), (WINDOW_HEIGHT / 2) - 300))
 
-            text_surface = self.font_small.render(self.char_selection(self, 'A'), False, (255, 255, 255))
-            self.screen.blit(text_surface, ((WINDOW_WIDTH / 2) - 50, (WINDOW_HEIGHT / 2) - 300))
+        self.char_selection()
 
-            text_surface = self.font_small.render(self.char_selection(self, 'A'), False, (255, 255, 255))
-            self.screen.blit(text_surface, ((WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2) - 300))
+        print(time.time() - self.time_of_last_key)
 
-            text_surface = self.font_small.render(self.char_selection(self, 'A'), False, (255, 255, 255))
-            self.screen.blit(text_surface, ((WINDOW_WIDTH / 2) + 50, (WINDOW_HEIGHT / 2) - 300))
+        if time.time() - self.time_of_last_key > WAIT_TIME_TO_END:
+            print(self.name)
+            self.gsm.submitted_hs()
 
-
-        return self.gsm.game_score
-
-    def char_selection(self, ch):
+    def char_selection(self):
         if self.im.get_right():
-            ch = chr(ord(ch) + 1)
-            if ord(ch) == 91:
-                ch = chr(97)
-            if ord(ch) == 123:
-                ch = chr(65)
-        self.char_selection(self, ch)
-        if self.im.get_left():
-            ch = chr(ord(ch) - 1)
-            if ord(ch) == 64:
-                ch = chr(122)
-            if ord(ch) == 96:
-                ch = chr(90)
-        self.char_selection(self, ch)
-        if self.im.get_fire():
-            return ch
+            if not self.btn_pressed:
+                self.ch = chr(ord(self.ch) + 1)
+                if ord(self.ch) == 91:
+                    self.ch = chr(97)
+                if ord(self.ch) == 123:
+                    self.ch = chr(65)
+                self.btn_pressed = True
+                self.time_of_last_key = time.time()
+        elif self.im.get_left():
+            if not self.btn_pressed:
+                self.ch = chr(ord(self.ch) - 1)
+                if ord(self.ch) == 64:
+                    self.ch = chr(122)
+                if ord(self.ch) == 96:
+                    self.ch = chr(90)
+                self.btn_pressed = True
+                self.time_of_last_key = time.time()
+        elif self.im.get_fire():
+            if not self.btn_pressed:
+                self.name += self.ch
+                self.btn_pressed = True
+                self.time_of_last_key = time.time()
+        else:
+            self.btn_pressed = False
+
+
