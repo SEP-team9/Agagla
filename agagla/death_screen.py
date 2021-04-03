@@ -26,14 +26,9 @@ class DeathScreen:
         self.h_scores = self.hsdb.get_high_score()
         self.hs_rank = 10
         for i in range(0, len(self.h_scores)):
-            print(self.h_scores[i][2])
-            print(self.score)
             if self.h_scores[i][2] < self.score:
                 self.hs_rank = i
                 break
-        print(self.h_scores)
-        print(self.score)
-        print(self.hs_rank)
 
     def render(self):
 
@@ -48,7 +43,12 @@ class DeathScreen:
             self.last_time = time_ms
 
         if self.hs_rank < 10:
-            text_surface = self.font_small.render(self.name + (self.ch if self.blink else '    '), False, (255, 255, 255))
+            text_surface = self.font_small.render("HIGH SCORE!", False, (255, 255, 255))
+            self.screen.blit(text_surface, (((WINDOW_WIDTH - text_surface.get_width()) / 2), (WINDOW_HEIGHT / 2) - 350))
+
+            text_surface = self.font_small.render(self.name + (self.ch if self.blink else '    '),
+                                                  False,
+                                                  (255, 255, 255))
             self.screen.blit(text_surface, (((WINDOW_WIDTH-text_surface.get_width()) / 2), (WINDOW_HEIGHT / 2) - 300))
 
             self.char_selection()

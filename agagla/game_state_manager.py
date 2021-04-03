@@ -26,7 +26,7 @@ class GameStateManager:
         self.tick_rate = 60
         self._last_game_state = None
         self._current_game_state = GameState.menu
-        self.game_score = 0
+        self.game_score = 700
         self.lives = 0
         self._entities = []
         self._last_tick_time = time.time()
