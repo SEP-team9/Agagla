@@ -1,5 +1,6 @@
 from agagla import game_state_manager
 import pygame
+import os
 from agagla import shared_objects
 
 
@@ -16,8 +17,12 @@ def init():
 
     pygame.init()
     pygame.display.set_caption("Agagla")
+    path = os.path.join('../data/window-icon.png')
+    icon = pygame.image.load(path)
+    pygame.display.set_icon(icon)
 
     pygame.display.set_mode((shared_objects.get_window_width(), shared_objects.get_window_height()))
+    pygame.display.update()
 
 
 if __name__ == '__main__':
