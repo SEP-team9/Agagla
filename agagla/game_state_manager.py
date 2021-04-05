@@ -206,7 +206,7 @@ class GameStateManager:
 
         for i in self.get_enemies():
             if i.is_idle():
-                print(i.get_pos().x)
+                # print(i.get_pos().x)
                 if i.get_pos().x < ENEMY_IDLE_BOUNDS: self.enemy_idle_left = False
                 elif i.get_pos().x > 1920 - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
             if i.get_health() <= 0:

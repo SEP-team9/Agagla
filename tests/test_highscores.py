@@ -11,10 +11,10 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(len(scores), 10)
 
     def test_add_score(self):
-        didit= self.hsdb.add_high_score('test_no_add', 1)
-        self.assertEqual(didit, False)
-        didit= self.hsdb.add_high_score('test_add', 500)
-        self.assertEqual(didit, True)
+        did_it = self.hsdb.add_high_score('test_no_add', 1)
+        self.assertEqual(did_it, False)
+        did_it = self.hsdb.add_high_score('test_add', 500)
+        self.assertEqual(did_it, True)
 
     def tearDown(self):
         self.hsdb = None

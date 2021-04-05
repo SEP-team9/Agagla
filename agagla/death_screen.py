@@ -54,7 +54,7 @@ class DeathScreen:
             self.char_selection()
 
         if time.time() - self.time_of_last_key > WAIT_TIME_TO_END:
-            print(self.name)
+            # print(self.name)
             if self.hs_rank <= 10:
                 self.hsdb.add_high_score(self.name, self.score)
             self.gsm.submitted_hs()
