@@ -1,6 +1,7 @@
 from agagla import game_state_manager
 from agagla import input_manager
 from agagla import high_score_database
+from agagla import background
 
 
 def init_im():
@@ -16,6 +17,10 @@ def init_hsdb():
     global hsdb
     hsdb = high_score_database.HighScoreDatabase()
 
+def init_bg():
+    global bg
+    bg = background.Background()
+
 def get_im():
     return im
 
@@ -24,3 +29,6 @@ def get_gsm():
 
 def get_hsdb():
     return hsdb
+
+def get_bg():
+    return bg

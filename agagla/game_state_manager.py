@@ -1,7 +1,9 @@
 import enum
 import time
 from agagla import menu
+from agagla import background
 from agagla import player_ship
+from agagla import shared_objects
 from agagla import enemy
 from agagla import death_screen as ds
 from pygame.math import Vector2
@@ -9,6 +11,7 @@ from agagla import __main__ as main
 
 import pygame
 
+from background import Background
 from enemy import Enemy
 
 PLAYER_SPAWN = Vector2(1920 / 2, 1080 - 100)
@@ -195,6 +198,7 @@ class GameStateManager:
 
     def _render_game(self):
         pygame.display.get_surface().fill((0, 0, 0))
+        shared_objects.get_bg().render()
 
         for i in self._entities:
             i.render()

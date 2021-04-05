@@ -18,6 +18,7 @@ class Menu:
 
     def render(self):
         self.screen.fill((0, 0, 0))
+        shared_objects.get_bg().render()
         text_surface = self.font_large.render('agagla', False, (255, 255, 255))
         self.screen.blit(text_surface, ((WINDOW_WIDTH / 2) - (text_surface.get_width() / 2), (WINDOW_HEIGHT / 2) - 200))
 
