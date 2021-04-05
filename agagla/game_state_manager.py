@@ -9,7 +9,12 @@ from agagla import __main__ as main
 
 import pygame
 
-PLAYER_SPAWN = Vector2(100, 100)
+from enemy import Enemy
+
+PLAYER_SPAWN = Vector2(1920 / 2, 1080 - 100)
+MAX_ENEMIES = 15
+
+ENEMY_IDLE_BOUNDS = 250
 
 
 class GameState(enum.Enum):
@@ -27,7 +32,9 @@ class GameStateManager:
         self._last_game_state = None
         self._current_game_state = GameState.menu
         self.game_score = 0
+        self.stage = 10
         self.lives = 3
+        self.enemy_idle_left = False
         self._entities = []
         self._last_tick_time = time.time()
         self.states_switch = {GameState.menu: self._menu_fn,
@@ -90,10 +97,52 @@ class GameStateManager:
     def start_game(self):
         self.add_entity(player_ship.PlayerShip(PLAYER_SPAWN))
 
-        for i in range(0, 15):
-            self.add_entity(enemy.Enemy(Vector2(i*100 + 200, 10)))
-
         self._set_state(GameState.running)
+
+    def spawn_wave(self, wave):
+        new_enemies = []
+
+        def add_enemies(enemyType, number):
+            for i in range(0, int(number)):
+                new_enemies.append(enemyType)
+
+        if self.stage % 5 == 0:
+            stageNum = int(self.stage / 5) - 1
+            numElite = int(stageNum % 20) + 1
+            numStandard = stageNum - numElite
+            if numStandard < 0: numStandard = 0
+
+            add_enemies(enemy.EnemyType.ELITE, numElite)
+            add_enemies(enemy.EnemyType.STANDARD, numStandard)
+        elif self.stage % 4 == 0:
+            stageNum = int(self.stage / 4) - 1
+            numReinforced = stageNum / 2
+            numStandard = stageNum - numReinforced
+            if numStandard < 0: numStandard = 0
+
+            add_enemies(enemy.EnemyType.REINFORCED, numReinforced)
+            add_enemies(enemy.EnemyType.STANDARD, numStandard)
+        elif self.stage % 3 == 0:
+            stageNum = int(self.stage / 4) - 1
+            numAssault = stageNum / 2
+            numStandard = stageNum - numAssault
+            if numStandard < 0: numStandard = 0
+
+            add_enemies(enemy.EnemyType.ASSAULT, numAssault)
+            add_enemies(enemy.EnemyType.STANDARD, numStandard)
+        else:
+            add_enemies(enemy.EnemyType.STANDARD, self.stage)
+
+        num_new_enemies = min(self.stage, MAX_ENEMIES)
+
+        num_per_row = 5
+
+        for i in range(0, min(len(new_enemies), num_new_enemies)):
+            #print("i: ", i, "    modulo: ", int(i / num_per_row), "     total: ", (int(i / num_per_row) * 75))
+            row_index = int(i / num_per_row)
+            spawn_y = (row_index * 75) + 100
+            spawn_x = ((i % num_per_row) * 100) + 200
+            self.add_entity(enemy.Enemy(Vector2(spawn_x, spawn_y), new_enemies[i]))
 
     def submitted_hs(self):
         self.__init__()
@@ -150,9 +199,16 @@ class GameStateManager:
         for i in self._entities:
             i.render()
 
+    def are_enemy_idle_left(self):
+        return self.enemy_idle_left
+
     def manage_game(self):
 
         for i in self.get_enemies():
+            if i.is_idle():
+                print(i.get_pos().x)
+                if i.get_pos().x < ENEMY_IDLE_BOUNDS: self.enemy_idle_left = False
+                elif i.get_pos().x > 1920 - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
             if i.get_health() <= 0:
                 self.game_score += 10
 
@@ -168,3 +224,7 @@ class GameStateManager:
 
         if self.lives <= 0:
             self._set_state(GameState.game_over)
+        elif len(self.get_enemies()) <= 0:
+            self.stage += 1
+            self.spawn_wave(self.stage)
+

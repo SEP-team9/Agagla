@@ -8,8 +8,6 @@ from pygame.math import Vector2
 VELOCITY = 5
 INIT_HEALTH = 2
 MAX_PROJECTILES = 3
-INIT_X = (1920 / 2)
-INIT_Y = (1080 - 75)
 
 
 class PlayerShip(Ship):
@@ -17,11 +15,11 @@ class PlayerShip(Ship):
         super().__init__(position, Vector2(50, 25))
         self.set_health(INIT_HEALTH)
         self.velocity = VELOCITY
-        self.set_pos(Vector2(INIT_X, INIT_Y))
         path = os.path.join('../data/player.png')
         player = pygame.image.load(path)
         player = pygame.transform.scale(player, (50, 50))
         self.image = player
+        #self.last_velocity = 5
         self.rect = self.image.get_rect()
         self.rect.x = self.get_pos()[0]
         self.rect.y = self.get_pos()[1]
@@ -40,7 +38,7 @@ class PlayerShip(Ship):
     def _calculate_movement(self, left, right, fire):
         if left:
             self.move(Vector2(-self.velocity, 0))
-        if right:
+        elif right:
             self.move(Vector2(self.velocity, 0))
 
         if fire and not self.firing:
