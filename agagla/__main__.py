@@ -17,6 +17,7 @@ def init():
     hsdb = shared_objects.get_hsdb()
 
     pygame.init()
+    pygame.mixer.init()
 
     pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 

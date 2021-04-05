@@ -20,6 +20,9 @@ class Enemy(ship.Ship):
         self.type = type
         self.current_fire_cooldown = 5
         self.idle = True
+        self.fire_sound = pygame.mixer.Sound(os.path.join("../data/enemy-shoot.wav"))
+        self.explode_sound = pygame.mixer.Sound(os.path.join("../data/enemy-explode.wav"))
+
         if self.type == EnemyType.STANDARD:
             super().__init__(position, Vector2(50, 50))
             path = os.path.join('../data/enemy1.png')
@@ -132,3 +135,12 @@ class Enemy(ship.Ship):
 
     def is_idle(self):
         return self.idle
+
+    def spawn_projectile(self, offset, rotation):
+        super().spawn_projectile(offset, rotation)
+        self.fire_sound.play()
+
+    def damage(self):
+        super().damage()
+        if self.get_health() <= 0:
+            self.explode_sound.play()
