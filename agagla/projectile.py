@@ -30,7 +30,7 @@ class Projectile(entity.Entity):
 
         self.move(self.move_vector)
 
-        if self.get_pos().y > 1080 or self.get_pos().y < 0:
+        if self.get_pos().y > shared_objects.get_window_height() or self.get_pos().y < 0:
             self.die()
             return
 

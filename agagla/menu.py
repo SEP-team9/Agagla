@@ -2,9 +2,6 @@ import pygame
 import time
 from agagla import shared_objects
 
-WINDOW_WIDTH = 1920
-WINDOW_HEIGHT = 1080
-
 
 class Menu:
 
@@ -20,7 +17,7 @@ class Menu:
         self.screen.fill((0, 0, 0))
         shared_objects.get_bg().render()
         text_surface = self.font_large.render('agagla', False, (255, 255, 255))
-        self.screen.blit(text_surface, ((WINDOW_WIDTH / 2) - (text_surface.get_width() / 2), (WINDOW_HEIGHT / 2) - 200))
+        self.screen.blit(text_surface, ((shared_objects.get_window_width() / 2) - (text_surface.get_width() / 2), (shared_objects.get_window_height() / 2) - 200))
 
         time_ms = time.time()*1000.0
 
@@ -31,8 +28,8 @@ class Menu:
         if self.blink:
             text_surface = self.font_small.render('Press    fire    to    start', False, (255, 255, 255))
             self.screen.blit(text_surface,
-                             ((WINDOW_WIDTH / 2) - (text_surface.get_width() / 2),
-                              (WINDOW_HEIGHT / 2) - 100))
+                             ((shared_objects.get_window_width() / 2) - (text_surface.get_width() / 2),
+                              (shared_objects.get_window_height() / 2) - 100))
 
         if shared_objects.get_im().get_fire():
             self.gsm.start_game()

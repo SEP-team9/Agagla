@@ -14,7 +14,7 @@ import pygame
 from background import Background
 from enemy import Enemy
 
-PLAYER_SPAWN = Vector2(1920 / 2, 1080 - 100)
+PLAYER_SPAWN = Vector2(shared_objects.get_window_width() / 2, shared_objects.get_window_height() - 100)
 MAX_ENEMIES = 15
 
 ENEMY_IDLE_BOUNDS = 250
@@ -212,7 +212,7 @@ class GameStateManager:
             if i.is_idle():
                 # print(i.get_pos().x)
                 if i.get_pos().x < ENEMY_IDLE_BOUNDS: self.enemy_idle_left = False
-                elif i.get_pos().x > 1920 - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
+                elif i.get_pos().x > shared_objects.get_window_width() - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
             if i.get_health() <= 0:
                 self.game_score += 10
 

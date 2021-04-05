@@ -32,3 +32,9 @@ def get_hsdb():
 
 def get_bg():
     return bg
+
+def get_window_width():
+    return 600
+
+def get_window_height():
+    return 700

@@ -10,7 +10,7 @@ class Ship(entity.Entity):
     def __init__(self, position, size):
         super().__init__(position, size)
         self._health = 1
-        self.LINE_OF_SIGHT_LENGTH = 1080
+        self.LINE_OF_SIGHT_LENGTH = shared_objects.get_window_height()
 
     def get_health(self):
         return self._health

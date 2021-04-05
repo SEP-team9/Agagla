@@ -2,9 +2,6 @@ from agagla import game_state_manager
 import pygame
 from agagla import shared_objects
 
-WINDOW_WIDTH = 1920
-WINDOW_HEIGHT = 1080
-
 
 def init():
     shared_objects.init_gsm()
@@ -18,8 +15,9 @@ def init():
     hsdb = shared_objects.get_hsdb()
 
     pygame.init()
+    pygame.display.set_caption("Agagla")
 
-    pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    pygame.display.set_mode((shared_objects.get_window_width(), shared_objects.get_window_height()))
 
 
 if __name__ == '__main__':
