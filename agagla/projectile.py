@@ -23,14 +23,16 @@ class Projectile(entity.Entity):
 
         for i in shared_objects.get_gsm().get_ships():
             distance = self.get_pos()-i.get_pos()
-            if abs(distance.x) < i.get_size().x and abs(distance.y) < i.get_size().y:
+            if abs(distance.x) < i.get_size().x and abs(distance.y) < i.get_size().y and i is not self.parent:
                 i.damage()
                 self.die()
+                return
 
         self.move(self.move_vector)
 
         if self.get_pos().y > 1080 or self.get_pos().y < 0:
             self.die()
+            return
 
     def render(self):
         self.rect = pygame.Rect(self.get_pos()[0], self.get_pos()[1], 10, 10)
