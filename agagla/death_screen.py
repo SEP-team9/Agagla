@@ -6,8 +6,9 @@ WINDOW_WIDTH = 1920
 WINDOW_HEIGHT = 1080
 WAIT_TIME_TO_END = 10
 TOP_LINE = (WINDOW_HEIGHT / 2) - (WINDOW_HEIGHT * 0.3)
-LEFT_COLUMN = (WINDOW_WIDTH / 2) - (WINDOW_WIDTH * 0.1)
-RIGHT_COLUMN = (WINDOW_WIDTH / 2) + (WINDOW_WIDTH * 0.1)
+LEFT_COLUMN = (WINDOW_WIDTH / 2) - (WINDOW_WIDTH * 0.05)
+RIGHT_COLUMN = (WINDOW_WIDTH / 2) + (WINDOW_WIDTH * 0.05)
+MAX_NAME_LENGTH = 10
 
 class DeathScreen:
 
@@ -52,18 +53,17 @@ class DeathScreen:
             text_surface = self.font_small.render(self.name + (self.ch if self.blink else '_'),
                                                   False,
                                                   (255, 255, 255))
-            self.screen.blit(text_surface, (LEFT_COLUMN, TOP_LINE + 50 * (self.hs_rank)))
+            self.screen.blit(text_surface, (LEFT_COLUMN, TOP_LINE + 50 * self.hs_rank))
 
             self.char_selection()
 
-        if time.time() - self.time_of_last_key > WAIT_TIME_TO_END:
+        if (time.time() - self.time_of_last_key > WAIT_TIME_TO_END) or len(self.name) == MAX_NAME_LENGTH:
             # print(self.name)
             if self.hs_rank <= 10:
                 self.hsdb.add_high_score(self.name, self.score)
             self.gsm.submitted_hs()
 
     def display_scores(self):
-        gutter = " "
         for i in range(0, self.hs_rank):
             hs_name = self.font_small.render(self.h_scores[i][1], False, (255, 255, 255))
             hs_score = self.font_small.render(str(self.h_scores[i][2]), False, (255, 255, 255))
