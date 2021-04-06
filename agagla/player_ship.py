@@ -12,7 +12,7 @@ MAX_PROJECTILES = 3
 
 class PlayerShip(Ship):
     def __init__(self, position):
-        super().__init__(position, Vector2(50, 25))
+        super().__init__(position, Vector2(50, 25), True)
         self.set_health(INIT_HEALTH)
         self.velocity = VELOCITY
         path = os.path.join('../data/player.png')

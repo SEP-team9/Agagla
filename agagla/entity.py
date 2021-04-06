@@ -1,12 +1,14 @@
 from pygame.math import Vector2
+from agagla import shared_objects
 
 
 class Entity:
 
-    def __init__(self, position, size):
+    def __init__(self, position, size, window_lock):
         self._position = position
         self._rotation = 0
         self._size = size
+        self.window_lock = window_lock
 
     def get_pos(self):
         return self._position
@@ -27,7 +29,17 @@ class Entity:
         pass
 
     def move(self, vec):
-        self.set_pos(Vector2(self.get_pos()[0]+vec.x, self.get_pos()[1]+vec.y))
+        newX = self.get_pos()[0]+vec.x
+        newY = self.get_pos()[1]+vec.y
+
+        if self.window_lock:
+            if newX < self._size[0]: newX = self._size[0]
+            elif newX > shared_objects.get_window_width() - self._size[0]: newX = shared_objects.get_window_width() - self._size[0]
+
+            if newY < self._size[1]: newY = self._size[1]
+            elif newY > shared_objects.get_window_height() - self._size[1]: newY = shared_objects.get_window_height() - self._size[1]
+
+        self.set_pos(Vector2(newX, newY))
 
     def tick(self):
         pass
