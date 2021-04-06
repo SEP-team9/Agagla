@@ -59,6 +59,8 @@ class Star:
             draw_point(i, 0)
             draw_point(0, i)
             draw_point(i, i)
+            draw_point(-i, i)
+            draw_point(i, -i)
 
 
 class Background:
