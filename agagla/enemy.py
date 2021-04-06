@@ -27,6 +27,7 @@ class Enemy(ship.Ship):
             enemy1 = pygame.transform.scale(enemy1, (50, 50))
             self.image = enemy1
             self.health = 1
+            self.score = 5
             self.fire_cooldown = 10
             self.velocity = 1
             self.rect = self.image.get_rect()
@@ -39,6 +40,7 @@ class Enemy(ship.Ship):
             enemy2 = pygame.transform.scale(enemy2, (50, 50))
             self.image = enemy2
             self.health = 1
+            self.score = 10
             self.velocity = 2
             self.fire_cooldown = 15
             self.rect = self.image.get_rect()
@@ -51,6 +53,7 @@ class Enemy(ship.Ship):
             enemy3 = pygame.transform.scale(enemy3, (50, 50))
             self.image = enemy3
             self.health = 2
+            self.score = 20
             self.velocity = 1
             self.fire_cooldown = 20
             self.rect = self.image.get_rect()
@@ -63,6 +66,7 @@ class Enemy(ship.Ship):
             enemy4 = pygame.transform.scale(enemy4, (50, 50))
             self.image = enemy4
             self.health = 3
+            self.score = 30
             self.fire_cooldown = 30
             self.velocity = 3
             self.rect = self.image.get_rect()
@@ -132,3 +136,6 @@ class Enemy(ship.Ship):
 
     def is_idle(self):
         return self.idle
+
+    def get_score(self):
+        return self.score

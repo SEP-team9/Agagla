@@ -9,8 +9,8 @@ class DeathScreen:
 
     def __init__(self):
         self.screen = pygame.display.get_surface()
-        self.font_large = pygame.font.Font("../data/fonts/arcadeclassic.regular.ttf", 40)
-        self.font_small = pygame.font.Font("../data/fonts/arcadeclassic.regular.ttf", 30)
+        self.font_large = shared_objects.get_large_font()
+        self.font_small = shared_objects.get_small_font()
         self.last_time = 0
         self.blink = False
         self.gsm = shared_objects.get_gsm()

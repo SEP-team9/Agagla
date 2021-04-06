@@ -24,6 +24,8 @@ def init():
     pygame.display.set_mode((shared_objects.get_window_width(), shared_objects.get_window_height()))
     pygame.display.update()
 
+    shared_objects.init_fonts()
+
 
 if __name__ == '__main__':
 

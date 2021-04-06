@@ -2,6 +2,7 @@ from agagla import game_state_manager
 from agagla import input_manager
 from agagla import high_score_database
 from agagla import background
+import pygame
 
 
 def init_im():
@@ -21,6 +22,16 @@ def init_bg():
     global bg
     bg = background.Background()
 
+def init_fonts():
+    global large_font
+    large_font = pygame.font.Font("../data/fonts/arcadeclassic.regular.ttf", 40)
+
+    global small_font
+    small_font = pygame.font.Font("../data/fonts/arcadeclassic.regular.ttf", 30)
+
+    global tiny_font
+    tiny_font = pygame.font.Font("../data/fonts/arcadeclassic.regular.ttf", 20)
+
 def get_im():
     return im
 
@@ -32,6 +43,15 @@ def get_hsdb():
 
 def get_bg():
     return bg
+
+def get_large_font():
+    return large_font
+
+def get_small_font():
+    return small_font
+
+def get_tiny_font():
+    return tiny_font
 
 def get_window_width():
     return 600
