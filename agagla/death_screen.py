@@ -5,7 +5,9 @@ from agagla import shared_objects
 WINDOW_WIDTH = 1920
 WINDOW_HEIGHT = 1080
 WAIT_TIME_TO_END = 10
-TOP_LINE = (WINDOW_HEIGHT / 2) - 300
+TOP_LINE = (WINDOW_HEIGHT / 2) - (WINDOW_HEIGHT * 0.3)
+LEFT_COLUMN = (WINDOW_WIDTH / 2) - (WINDOW_WIDTH * 0.1)
+RIGHT_COLUMN = (WINDOW_WIDTH / 2) + (WINDOW_WIDTH * 0.1)
 
 class DeathScreen:
 
@@ -44,13 +46,13 @@ class DeathScreen:
             self.last_time = time_ms
         self.display_scores()
         if self.hs_rank < 10:
-            text_surface = self.font_small.render("HIGH SCORE!", False, (255, 255, 255))
+            text_surface = self.font_small.render("HIGH SCORE ACHIEVED!", False, (255, 255, 255))
             self.screen.blit(text_surface, (((WINDOW_WIDTH - text_surface.get_width()) / 2), (WINDOW_HEIGHT / 2) - 450))
 
-            text_surface = self.font_small.render("{:<20} {:^25} {:>20}".format(self.name, (self.ch if self.blink else '    '),''),
+            text_surface = self.font_small.render(self.name + (self.ch if self.blink else '_'),
                                                   False,
                                                   (255, 255, 255))
-            self.screen.blit(text_surface, ((((WINDOW_WIDTH-text_surface.get_width()) / 2)), TOP_LINE + 50 * (self.hs_rank)))
+            self.screen.blit(text_surface, (LEFT_COLUMN, TOP_LINE + 50 * (self.hs_rank)))
 
             self.char_selection()
 
@@ -63,17 +65,18 @@ class DeathScreen:
     def display_scores(self):
         gutter = " "
         for i in range(0, self.hs_rank):
-            hs_formatted = "{:<20} {:^25} {:>20}".format(self.h_scores[i][1], gutter, str(self.h_scores[i][2]))
-            text_surface = self.font_small.render(hs_formatted, False, (255, 255, 255))
-            self.screen.blit(text_surface, (((WINDOW_WIDTH - text_surface.get_width()) / 2), TOP_LINE + 50*i))
+            hs_name = self.font_small.render(self.h_scores[i][1], False, (255, 255, 255))
+            hs_score = self.font_small.render(str(self.h_scores[i][2]), False, (255, 255, 255))
+            self.screen.blit(hs_name, (LEFT_COLUMN, TOP_LINE + 50*i))
+            self.screen.blit(hs_score, (RIGHT_COLUMN, TOP_LINE + 50 * i))
         if self.hs_rank <10:
-            hs_formatted = "{:<20} {:^25} {:>20}".format('',gutter, str(self.score))
-            text_surface = self.font_small.render(hs_formatted, False, (255, 255, 255))
-            self.screen.blit(text_surface, (((WINDOW_WIDTH - text_surface.get_width()) / 2), TOP_LINE + 50 * self.hs_rank))
+            text_surface = self.font_small.render(str(self.score), False, (255, 255, 255))
+            self.screen.blit(text_surface, (RIGHT_COLUMN, TOP_LINE + 50 * self.hs_rank))
         for i in range(self.hs_rank+1, len(self.h_scores)):
-            hs_formatted = "{:<20} {:^25} {:>20}".format(self.h_scores[i-1][1], gutter, str(self.h_scores[i-1][2]))
-            text_surface = self.font_small.render(hs_formatted, False, (255, 255, 255))
-            self.screen.blit(text_surface, (((WINDOW_WIDTH - text_surface.get_width()) / 2), TOP_LINE + 50*(i)))
+            hs_name = self.font_small.render(self.h_scores[i][1], False, (255, 255, 255))
+            hs_score = self.font_small.render(str(self.h_scores[i][2]), False, (255, 255, 255))
+            self.screen.blit(hs_name, (LEFT_COLUMN, TOP_LINE + 50 * i))
+            self.screen.blit(hs_score, (RIGHT_COLUMN, TOP_LINE + 50 * i))
 
     def char_selection(self):
         if self.im.get_right():
