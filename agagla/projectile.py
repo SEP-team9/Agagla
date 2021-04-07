@@ -7,7 +7,7 @@ PROJECTILE_SPEED = 10
 
 
 class Projectile(entity.Entity):
-    def __init__(self, position, rotation, parent = None):
+    def __init__(self, position, rotation, parent=None):
         super(Projectile, self).__init__(position, Vector2(10, 10), False)
         self.set_rot(rotation)
         self.move_vector = Vector2(0, PROJECTILE_SPEED)
@@ -22,8 +22,10 @@ class Projectile(entity.Entity):
         super(Projectile, self).tick()
 
         for i in shared_objects.get_gsm().get_ships():
-            distance = self.get_pos()-i.get_pos()
-            if abs(distance.x) < i.get_size().x and abs(distance.y) < i.get_size().y and i is not self.parent:
+            distance = self.get_pos() - i.get_pos()
+            if abs(distance.x) < i.get_size().x \
+                    and abs(distance.y) < i.get_size().y \
+                    and not isinstance(i, type(self.parent)):
                 i.damage()
                 self.die()
                 return
