@@ -1,7 +1,9 @@
 import enum
 import time
 from agagla import menu
+from agagla import background
 from agagla import player_ship
+from agagla import shared_objects
 from agagla import enemy
 from agagla import death_screen as ds
 from pygame.math import Vector2
@@ -9,12 +11,13 @@ from agagla import __main__ as main
 
 import pygame
 
+from background import Background
 from enemy import Enemy
 
-PLAYER_SPAWN = Vector2(1920 / 2, 1080 - 100)
+PLAYER_SPAWN = Vector2(shared_objects.get_window_width() / 2, shared_objects.get_window_height() - 50)
 MAX_ENEMIES = 15
 
-ENEMY_IDLE_BOUNDS = 250
+ENEMY_IDLE_BOUNDS = 75
 
 
 class GameState(enum.Enum):
@@ -193,11 +196,28 @@ class GameStateManager:
 
         return False
 
+    def render_game_ui(self):
+        screen = pygame.display.get_surface()
+        font_small = shared_objects.get_tiny_font()
+        score_surface = font_small.render("Score   " + str(self.game_score), False, (255, 255, 255))
+        screen.blit(score_surface, (30, 10))
+
+        round_surface = font_small.render("Stage   " + str(self.stage), False, (255, 255, 255))
+        screen.blit(round_surface, ((shared_objects.get_window_width() / 2) - (round_surface.get_width() / 2), 10))
+
+        life_surface = font_small.render("Lives   " + str(self.lives), False, (255, 255, 255))
+        screen.blit(life_surface, (shared_objects.get_window_width() - life_surface.get_width() - 30, 10))
+
+        return None
+
     def _render_game(self):
         pygame.display.get_surface().fill((0, 0, 0))
+        shared_objects.get_bg().render()
 
         for i in self._entities:
             i.render()
+
+        self.render_game_ui()
 
     def are_enemy_idle_left(self):
         return self.enemy_idle_left
@@ -208,9 +228,11 @@ class GameStateManager:
             if i.is_idle():
                 # print(i.get_pos().x)
                 if i.get_pos().x < ENEMY_IDLE_BOUNDS: self.enemy_idle_left = False
-                elif i.get_pos().x > 1920 - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
+
+                elif i.get_pos().x > shared_objects.get_window_width() - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
+
             if i.get_health() <= 0:
-                self.game_score += 10
+                self.game_score += i.get_score()
 
         for i in self.get_ships():
             if i.get_health() <= 0:

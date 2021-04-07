@@ -1,15 +1,14 @@
 from agagla import game_state_manager
 import pygame
+import os
 from agagla import shared_objects
-
-WINDOW_WIDTH = 1920
-WINDOW_HEIGHT = 1080
 
 
 def init():
     shared_objects.init_gsm()
     shared_objects.init_im()
     shared_objects.init_hsdb()
+    shared_objects.init_bg()
 
     global gsm, im, hsdb
     gsm = shared_objects.get_gsm()
@@ -18,8 +17,16 @@ def init():
 
     pygame.init()
     pygame.mixer.init()
+    
+    pygame.display.set_caption("Agagla")
+    path = os.path.join('../data/window-icon.png')
+    icon = pygame.image.load(path)
+    pygame.display.set_icon(icon)
 
-    pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    pygame.display.set_mode((shared_objects.get_window_width(), shared_objects.get_window_height()))
+    pygame.display.update()
+
+    shared_objects.init_fonts()
 
 
 if __name__ == '__main__':
