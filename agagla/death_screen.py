@@ -67,16 +67,16 @@ class DeathScreen:
         for i in range(0, self.hs_rank):
             hs_name = self.font_small.render(self.h_scores[i][1], False, (255, 255, 255))
             hs_score = self.font_small.render(str(self.h_scores[i][2]), False, (255, 255, 255))
-            self.screen.blit(hs_name, (LEFT_COLUMN, TOP_LINE + 50*i))
+            self.screen.blit(hs_name, (LEFT_COLUMN, TOP_LINE + 50 * i))
             self.screen.blit(hs_score, (RIGHT_COLUMN, TOP_LINE + 50 * i))
         if self.hs_rank <10:
             text_surface = self.font_small.render(str(self.score), False, (255, 255, 255))
             self.screen.blit(text_surface, (RIGHT_COLUMN, TOP_LINE + 50 * self.hs_rank))
-        for i in range(self.hs_rank+1, len(self.h_scores)):
+        for i in range(self.hs_rank, len(self.h_scores)):
             hs_name = self.font_small.render(self.h_scores[i][1], False, (255, 255, 255))
             hs_score = self.font_small.render(str(self.h_scores[i][2]), False, (255, 255, 255))
-            self.screen.blit(hs_name, (LEFT_COLUMN, TOP_LINE + 50 * i))
-            self.screen.blit(hs_score, (RIGHT_COLUMN, TOP_LINE + 50 * i))
+            self.screen.blit(hs_name, (LEFT_COLUMN, TOP_LINE + 50 * (i + 1)))
+            self.screen.blit(hs_score, (RIGHT_COLUMN, TOP_LINE + 50 * (i + 1)))
 
     def char_selection(self):
         if self.im.get_right():
