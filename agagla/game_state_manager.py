@@ -11,7 +11,6 @@ from agagla import __main__ as main
 
 import pygame
 
-
 from background import Background
 from enemy import Enemy
 
@@ -19,7 +18,6 @@ PLAYER_SPAWN = Vector2(shared_objects.get_window_width() / 2, shared_objects.get
 MAX_ENEMIES = 15
 
 ENEMY_IDLE_BOUNDS = 75
-
 
 
 class GameState(enum.Enum):
@@ -218,7 +216,6 @@ class GameStateManager:
 
         for i in self._entities:
             i.render()
-
 
         self.render_game_ui()
 

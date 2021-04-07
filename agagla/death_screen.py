@@ -2,6 +2,7 @@ import pygame
 import time
 from agagla import shared_objects
 
+
 WINDOW_HEIGHT = shared_objects.get_window_height()
 WINDOW_WIDTH = shared_objects.get_window_width()
 
@@ -15,8 +16,10 @@ class DeathScreen:
 
     def __init__(self):
         self.screen = pygame.display.get_surface()
+
         self.font_large = shared_objects.get_large_font()
         self.font_small = shared_objects.get_small_font()
+
         self.last_time = 0
         self.blink = False
         self.gsm = shared_objects.get_gsm()
@@ -46,6 +49,7 @@ class DeathScreen:
         if time_ms - self.last_time > 500.0:
             self.blink = ~self.blink
             self.last_time = time_ms
+
         self.display_scores()
         if self.hs_rank < 10:
 
@@ -61,10 +65,12 @@ class DeathScreen:
             self.char_selection()
 
         if (time.time() - self.time_of_last_key > WAIT_TIME_TO_END) or len(self.name) == MAX_NAME_LENGTH:
+
             # print(self.name)
             if self.hs_rank <= 10:
                 self.hsdb.add_high_score(self.name, self.score)
             self.gsm.submitted_hs()
+
 
     def display_scores(self):
         for i in range(0, self.hs_rank):
@@ -81,6 +87,7 @@ class DeathScreen:
             self.screen.blit(hs_name, (LEFT_COLUMN, TOP_LINE + 50 * (i + 1)))
             self.screen.blit(hs_score, (RIGHT_COLUMN, TOP_LINE + 50 * (i + 1)))
 
+            
     def char_selection(self):
         if self.im.get_right():
             if not self.btn_pressed:

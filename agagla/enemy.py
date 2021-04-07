@@ -20,16 +20,20 @@ class Enemy(ship.Ship):
         self.type = type
         self.current_fire_cooldown = 5
         self.idle = True
-        if self.type == EnemyType.STANDARD:
+        self.fire_sound = pygame.mixer.Sound(os.path.join("../data/enemy-shoot.wav"))
+        self.explode_sound = pygame.mixer.Sound(os.path.join("../data/enemy-explode.wav"))
 
-            super().__init__(position, Vector2(50, 50), False)
+        if self.type == EnemyType.STANDARD:
+            super().__init__(position, Vector2(50, 50))
 
             path = os.path.join('../data/enemy1.png')
             enemy1 = pygame.image.load(path)
             enemy1 = pygame.transform.scale(enemy1, (50, 50))
             self.image = enemy1
             self.health = 1
+
             self.score = 5
+  
             self.fire_cooldown = 10
             self.velocity = 1
             self.rect = self.image.get_rect()
@@ -38,12 +42,13 @@ class Enemy(ship.Ship):
         elif self.type == EnemyType.ASSAULT:
 
             super().__init__(position, Vector2(50, 50), False)
+            
             path = os.path.join('../data/enemy2.png')
             enemy2 = pygame.image.load(path)
             enemy2 = pygame.transform.scale(enemy2, (50, 50))
             self.image = enemy2
             self.health = 1
-
+            
             self.score = 10
 
             self.velocity = 2
@@ -152,5 +157,15 @@ class Enemy(ship.Ship):
     def is_idle(self):
         return self.idle
 
+    def spawn_projectile(self, offset, rotation):
+        super().spawn_projectile(offset, rotation)
+        self.fire_sound.play()
+
+    def damage(self):
+        super().damage()
+        if self.get_health() <= 0:
+            self.explode_sound.play()
+            
     def get_score(self):
         return self.score
+

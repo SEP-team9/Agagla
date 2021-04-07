@@ -16,6 +16,7 @@ def init_gsm():
 def init_hsdb():
     global hsdb
     hsdb = high_score_database.HighScoreDatabase()
+    
 
 def init_bg():
     global bg

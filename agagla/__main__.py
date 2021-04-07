@@ -16,6 +16,8 @@ def init():
     hsdb = shared_objects.get_hsdb()
 
     pygame.init()
+    pygame.mixer.init()
+    
     pygame.display.set_caption("Agagla")
     path = os.path.join('../data/window-icon.png')
     icon = pygame.image.load(path)
