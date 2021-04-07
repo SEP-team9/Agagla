@@ -1,10 +1,14 @@
 import pygame
 import time
 from agagla import shared_objects
+
+WINDOW_HEIGHT = shared_objects.get_window_height()
+WINDOW_WIDTH = shared_objects.get_window_width()
+
 WAIT_TIME_TO_END = 10
 TOP_LINE = (WINDOW_HEIGHT / 2) - (WINDOW_HEIGHT * 0.3)
-LEFT_COLUMN = (WINDOW_WIDTH / 2) - (WINDOW_WIDTH * 0.05)
-RIGHT_COLUMN = (WINDOW_WIDTH / 2) + (WINDOW_WIDTH * 0.05)
+LEFT_COLUMN = (WINDOW_WIDTH / 2) - (WINDOW_WIDTH * 0.2)
+RIGHT_COLUMN = (WINDOW_WIDTH / 2) + (WINDOW_WIDTH * 0.2)
 MAX_NAME_LENGTH = 10
 
 class DeathScreen:
@@ -32,10 +36,10 @@ class DeathScreen:
 
 
     def render(self):
+        self.screen.fill((0, 0, 0))
         shared_objects.get_bg().render()
         text_surface = self.font_large.render('Game Over', False, (255, 255, 255))
-
-        self.screen.blit(text_surface, ((WINDOW_WIDTH / 2) - (text_surface.get_width() / 2), (WINDOW_HEIGHT ) - 300))
+        self.screen.blit(text_surface, ((WINDOW_WIDTH / 2) - (text_surface.get_width() / 2), 25))
 
         time_ms = time.time() * 1000.0
 
@@ -46,7 +50,7 @@ class DeathScreen:
         if self.hs_rank < 10:
 
             text_surface = self.font_small.render("HIGH SCORE ACHIEVED!", False, (255, 255, 255))
-            self.screen.blit(text_surface, (((WINDOW_WIDTH - text_surface.get_width()) / 2), (WINDOW_HEIGHT / 2) - 450))
+            self.screen.blit(text_surface, (((WINDOW_WIDTH - text_surface.get_width()) / 2), 75))
 
             text_surface = self.font_small.render(self.name + (self.ch if self.blink else '_'),
                                                   False,
