@@ -4,7 +4,6 @@ from agagla import high_score_database
 from agagla import background
 import pygame
 
-
 def init_im():
     global im
     im = input_manager.InputManager()
