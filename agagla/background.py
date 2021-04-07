@@ -46,21 +46,23 @@ class Star:
         return self.brightness <= -1 and self.dimming
 
     def draw(self, screen):
-        def draw_point(relative_x, relative_y):
-            our_x = int(self.position.x + relative_x)
-            our_y = int(self.position.y + relative_y)
-            if our_x < 0 or our_y < 0 or our_x > shared_objects.get_window_width() or our_y > shared_objects.get_window_height(): return
-            pixel_brightness = self.brightness - (abs(relative_x) * 50) - (abs(relative_y) * 50)
-            if pixel_brightness <= 0: return
-            screen.set_at((our_x, our_y), (int(pixel_brightness), int(pixel_brightness), int(pixel_brightness)))
-
-        draw_point(0, 0)
-        for i in range(-self.radius, self.radius + 1):
-            draw_point(i, 0)
-            draw_point(0, i)
-            draw_point(i, i)
-            draw_point(-i, i)
-            draw_point(i, -i)
+        # def draw_point(relative_x, relative_y):
+        #     our_x = int(self.position.x + relative_x)
+        #     our_y = int(self.position.y + relative_y)
+        #     if our_x < 0 or our_y < 0 or our_x > shared_objects.get_window_width() or our_y > shared_objects.get_window_height(): return
+        #     pixel_brightness = self.brightness - (abs(relative_x) * 50) - (abs(relative_y) * 50)
+        #     if pixel_brightness <= 0: return
+        #     screen.set_at((our_x, our_y), (int(pixel_brightness), int(pixel_brightness), int(pixel_brightness)))
+        #
+        # draw_point(0, 0)
+        # for i in range(-self.radius, self.radius + 1):
+        #     draw_point(i, 0)
+        #     draw_point(0, i)
+        #     draw_point(i, i)
+        #     draw_point(-i, i)
+        #     draw_point(i, -i)
+        color = (255, 255, 255)
+        pygame.draw.rect(screen, color, pygame.Rect(self.position.x, self.position.y, self.radius, self.radius))
 
 
 class Background:
