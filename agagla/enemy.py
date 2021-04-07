@@ -20,11 +20,13 @@ class Enemy(ship.Ship):
         self.type = type
         self.current_fire_cooldown = 5
         self.idle = True
+        self.offset = Vector2(0, 35)
+
         self.fire_sound = pygame.mixer.Sound(os.path.join("../data/enemy-shoot.wav"))
         self.explode_sound = pygame.mixer.Sound(os.path.join("../data/enemy-explode.wav"))
 
         if self.type == EnemyType.STANDARD:
-            super().__init__(position, Vector2(50, 50))
+            super().__init__(position, Vector2(40, 50), False )
 
             path = os.path.join('../data/enemy1.png')
             enemy1 = pygame.image.load(path)
@@ -41,7 +43,7 @@ class Enemy(ship.Ship):
             self.rect.y = self.get_pos().y
         elif self.type == EnemyType.ASSAULT:
 
-            super().__init__(position, Vector2(50, 50), False)
+            super().__init__(position, Vector2(40, 50), False)
             
             path = os.path.join('../data/enemy2.png')
             enemy2 = pygame.image.load(path)
@@ -58,7 +60,7 @@ class Enemy(ship.Ship):
             self.rect.y = self.get_pos().y
         elif self.type == EnemyType.REINFORCED:
 
-            super().__init__(position, Vector2(50, 50), False)
+            super().__init__(position, Vector2(40, 50), False)
 
             path = os.path.join('../data/enemy3.png')
             enemy3 = pygame.image.load(path)
@@ -75,7 +77,7 @@ class Enemy(ship.Ship):
             self.rect.y = self.get_pos().y
         else:
 
-            super().__init__(position, Vector2(50, 50), False)
+            super().__init__(position, Vector2(40, 50), False)
 
             path = os.path.join('../data/enemy4.png')
             enemy4 = pygame.image.load(path)
@@ -102,22 +104,22 @@ class Enemy(ship.Ship):
         self.current_fire_cooldown = self.fire_cooldown
         if self.type == EnemyType.STANDARD:
 
-            self.spawn_projectile(Vector2(0, 10), 0)
+            self.spawn_projectile(self.offset, 0)
         if self.type == EnemyType.ASSAULT:
             for x in range(3):
-                self.spawn_projectile(Vector2(0, 10), 0)
+                self.spawn_projectile(self.offset, 0)
         if self.type == EnemyType.REINFORCED:
-            self.spawn_projectile(Vector2(0, 10), 0)
+            self.spawn_projectile(self.offset, 0)
 
-            self.spawn_projectile(Vector2(0, 10), 45)
-            self.spawn_projectile(Vector2(0, 10), -45)
+            self.spawn_projectile(self.offset, 45)
+            self.spawn_projectile(self.offset, -45)
         if self.type == EnemyType.ELITE:
             for x in range(5):
-                self.spawn_projectile(Vector2(0, 10), 0)
-                self.spawn_projectile(Vector2(0, 10), 45)
-                self.spawn_projectile(Vector2(0, 10), -45)
-                self.spawn_projectile(Vector2(0, 10), 22)
-                self.spawn_projectile(Vector2(0, 10), -22)
+                self.spawn_projectile(self.offset, 0)
+                self.spawn_projectile(self.offset, 45)
+                self.spawn_projectile(self.offset, -45)
+                self.spawn_projectile(self.offset, 22)
+                self.spawn_projectile(self.offset, -22)
         return None
 
     def get_type(self):

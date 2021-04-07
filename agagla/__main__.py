@@ -1,6 +1,7 @@
 from agagla import game_state_manager
 import pygame
 import os
+import time
 from agagla import shared_objects
 
 
@@ -17,7 +18,7 @@ def init():
 
     pygame.init()
     pygame.mixer.init()
-    
+
     pygame.display.set_caption("Agagla")
     path = os.path.join('../data/window-icon.png')
     icon = pygame.image.load(path)
@@ -32,6 +33,14 @@ def init():
 if __name__ == '__main__':
 
     init()
+
+    winners = pygame.image.load(os.path.join("../data/winners.png"))
+    pygame.Surface.blit(pygame.display.get_surface(),
+                        winners,
+                        ((shared_objects.get_window_width()-winners.get_width())/2,
+                         (shared_objects.get_window_height()-winners.get_height())/2))
+    pygame.display.update()
+    time.sleep(5)
 
     while gsm.get_state() != game_state_manager.GameState.exit:
         gsm.game_loop()

@@ -35,7 +35,7 @@ class GameStateManager:
         self._last_game_state = None
         self._current_game_state = GameState.menu
         self.game_score = 0
-        self.stage = 10
+        self.stage = 1
         self.lives = 3
         self.enemy_idle_left = False
         self._entities = []
