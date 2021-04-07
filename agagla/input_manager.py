@@ -20,7 +20,7 @@ class InputManager:
                     self._left_state = True
                 if i.dict['scancode'] == RIGHT_SCANCODE:
                     self._right_state = True
-                if i.dict['scancode'] == FIRE_SCANCODE:
+                if i.dict['scancode'] == FIRE_SCANCODE or i.dict['scancode'] == 44:
                     self._fire_state = True
 
             if i.type == 769:
@@ -28,7 +28,7 @@ class InputManager:
                     self._left_state = False
                 if i.dict['scancode'] == RIGHT_SCANCODE:
                     self._right_state = False
-                if i.dict['scancode'] == FIRE_SCANCODE:
+                if i.dict['scancode'] == FIRE_SCANCODE or i.dict['scancode'] == 44:
                     self._fire_state = False
 
     def get_left(self):

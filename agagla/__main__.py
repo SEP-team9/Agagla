@@ -9,10 +9,12 @@ WINDOW_HEIGHT = 1080
 def init():
     shared_objects.init_gsm()
     shared_objects.init_im()
+    shared_objects.init_hsdb()
 
-    global gsm, im
+    global gsm, im, hsdb
     gsm = shared_objects.get_gsm()
     im = shared_objects.get_im()
+    hsdb = shared_objects.get_hsdb()
 
     pygame.init()
 
