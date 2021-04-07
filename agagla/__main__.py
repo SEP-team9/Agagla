@@ -3,6 +3,8 @@ import pygame
 import os
 import time
 from agagla import shared_objects
+import os
+import time
 
 
 def init():
@@ -29,7 +31,6 @@ def init():
 
     shared_objects.init_fonts()
 
-
 if __name__ == '__main__':
 
     init()
@@ -39,6 +40,7 @@ if __name__ == '__main__':
                         winners,
                         ((shared_objects.get_window_width()-winners.get_width())/2,
                          (shared_objects.get_window_height()-winners.get_height())/2))
+
     pygame.display.update()
     time.sleep(5)
 
