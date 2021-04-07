@@ -8,7 +8,7 @@ PROJECTILE_SPEED = 10
 
 class Projectile(entity.Entity):
     def __init__(self, position, rotation, parent = None):
-        super(Projectile, self).__init__(position, Vector2(10, 10))
+        super(Projectile, self).__init__(position, Vector2(10, 10), False)
         self.set_rot(rotation)
         self.move_vector = Vector2(0, PROJECTILE_SPEED)
         self.move_vector = self.move_vector.rotate(rotation)
@@ -30,7 +30,7 @@ class Projectile(entity.Entity):
 
         self.move(self.move_vector)
 
-        if self.get_pos().y > 1080 or self.get_pos().y < 0:
+        if self.get_pos().y > shared_objects.get_window_height() or self.get_pos().y < 0:
             self.die()
             return
 
