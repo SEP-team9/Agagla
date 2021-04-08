@@ -35,7 +35,7 @@ class GameStateManager:
         self._last_game_state = None
         self._current_game_state = GameState.menu
         self.game_score = 0
-        self.stage = 1
+        self.stage = 0
         self.lives = 3
         self.enemy_idle_left = False
         self._entities = []
@@ -119,17 +119,19 @@ class GameStateManager:
             add_enemies(enemy.EnemyType.STANDARD, numStandard)
         elif self.stage % 4 == 0:
             stageNum = int(self.stage / 4) - 1
+            if stageNum <= 0: stageNum = 2
             numReinforced = stageNum / 2
             numStandard = stageNum - numReinforced
-            if numStandard < 0: numStandard = 0
+
 
             add_enemies(enemy.EnemyType.REINFORCED, numReinforced)
             add_enemies(enemy.EnemyType.STANDARD, numStandard)
         elif self.stage % 3 == 0:
             stageNum = int(self.stage / 4) - 1
+            if stageNum <= 0: stageNum = 2
             numAssault = stageNum / 2
             numStandard = stageNum - numAssault
-            if numStandard < 0: numStandard = 0
+
 
             add_enemies(enemy.EnemyType.ASSAULT, numAssault)
             add_enemies(enemy.EnemyType.STANDARD, numStandard)
