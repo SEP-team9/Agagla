@@ -30,7 +30,7 @@ class StageScreen:
         self.hsdb = shared_objects.get_hsdb()
         self.btn_pressed = False
         self.time_of_last_key = time.time()
-        self.time = 1000
+        self.time = 1100
         self.screneExit = False
 
     def render(self):
