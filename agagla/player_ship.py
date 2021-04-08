@@ -12,7 +12,9 @@ MAX_PROJECTILES = 3
 
 class PlayerShip(Ship):
     def __init__(self, position):
-        super().__init__(position, Vector2(50, 25))
+        # super().__init__(position, Vector2(50, 25))
+        super().__init__(position, Vector2(50, 25), True)
+        
         self.set_health(INIT_HEALTH)
         self.velocity = VELOCITY
         path = os.path.join('../data/player.png')
@@ -25,6 +27,10 @@ class PlayerShip(Ship):
         self.rect.y = self.get_pos()[1]
         self.firing = False
 
+        self.fire_sound = pygame.mixer.Sound(os.path.join('../data/player-shoot.wav'))
+        self.hit_sound = pygame.mixer.Sound(os.path.join("../data/player-hit.wav"))
+        self.die_sound = pygame.mixer.Sound(os.path.join("../data/player-explode.wav"))
+
     def render(self):
         pygame.Surface.blit(pygame.display.get_surface(), self.image, (self.get_pos().x - 17, self.get_pos().y - 17))
 
@@ -34,6 +40,17 @@ class PlayerShip(Ship):
         right = im.get_right()
         fire = im.get_fire()
         self._calculate_movement(left, right, fire)
+
+    def spawn_projectile(self, offset, rotation):
+        super().spawn_projectile(offset, rotation)
+        self.fire_sound.play()
+
+    def damage(self):
+        super().damage()
+        if self.get_health() > 0:
+            self.hit_sound.play()
+        else:
+            self.die_sound.play()
 
     def _calculate_movement(self, left, right, fire):
         if left:

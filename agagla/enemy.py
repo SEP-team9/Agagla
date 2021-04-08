@@ -20,49 +20,102 @@ class Enemy(ship.Ship):
         self.type = type
         self.current_fire_cooldown = 5
         self.idle = True
+# <<<<<<< HEAD
+#         if self.type == EnemyType.STANDARD:
+#             super().__init__(position, Vector2(50, 50))
+# =======
+        self.offset = Vector2(0, 35)
+
+        self.fire_sound = pygame.mixer.Sound(os.path.join("../data/enemy-shoot.wav"))
+        self.explode_sound = pygame.mixer.Sound(os.path.join("../data/enemy-explode.wav"))
+
         if self.type == EnemyType.STANDARD:
-            super().__init__(position, Vector2(50, 50))
+            super().__init__(position, Vector2(40, 50), False )
+
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82
             path = os.path.join('../data/enemy1.png')
             enemy1 = pygame.image.load(path)
             enemy1 = pygame.transform.scale(enemy1, (50, 50))
             self.image = enemy1
             self.health = 1
+# <<<<<<< HEAD
+# =======
+
+            self.score = 5
+  
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82
             self.fire_cooldown = 10
             self.velocity = 1
             self.rect = self.image.get_rect()
             self.rect.x = self.get_pos().x
             self.rect.y = self.get_pos().y
         elif self.type == EnemyType.ASSAULT:
-            super().__init__(position, Vector2(50, 50))
+# <<<<<<< HEAD
+#             super().__init__(position, Vector2(50, 50))
+# =======
+
+            super().__init__(position, Vector2(40, 50), False)
+            
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82
             path = os.path.join('../data/enemy2.png')
             enemy2 = pygame.image.load(path)
             enemy2 = pygame.transform.scale(enemy2, (50, 50))
             self.image = enemy2
             self.health = 1
+# <<<<<<< HEAD
+# =======
+#
+            self.score = 10
+
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82
             self.velocity = 2
             self.fire_cooldown = 15
             self.rect = self.image.get_rect()
             self.rect.x = self.get_pos().x
             self.rect.y = self.get_pos().y
         elif self.type == EnemyType.REINFORCED:
-            super().__init__(position, Vector2(50, 50))
+# <<<<<<< HEAD
+#             super().__init__(position, Vector2(50, 50))
+# =======
+
+            super().__init__(position, Vector2(40, 50), False)
+
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82
             path = os.path.join('../data/enemy3.png')
             enemy3 = pygame.image.load(path)
             enemy3 = pygame.transform.scale(enemy3, (50, 50))
             self.image = enemy3
             self.health = 2
+# <<<<<<< HEAD
+# =======
+
+            self.score = 20
+
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82
             self.velocity = 1
             self.fire_cooldown = 20
             self.rect = self.image.get_rect()
             self.rect.x = self.get_pos().x
             self.rect.y = self.get_pos().y
         else:
-            super().__init__(position, Vector2(50, 50))
+# <<<<<<< HEAD
+#             super().__init__(position, Vector2(50, 50))
+# =======
+
+            super().__init__(position, Vector2(40, 50), False)
+
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82
             path = os.path.join('../data/enemy4.png')
             enemy4 = pygame.image.load(path)
             enemy4 = pygame.transform.scale(enemy4, (50, 50))
             self.image = enemy4
             self.health = 3
+# <<<<<<< HEAD
+# =======
+
+            self.score = 30
+
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82
             self.fire_cooldown = 30
             self.velocity = 3
             self.rect = self.image.get_rect()
@@ -79,6 +132,7 @@ class Enemy(ship.Ship):
     def fire(self):
         self.current_fire_cooldown = self.fire_cooldown
         if self.type == EnemyType.STANDARD:
+# <<<<<<< HEAD
             self.spawn_projectile(Vector2(0, 10), 0)
         if self.type == EnemyType.ASSAULT:
             for x in range(3):
@@ -94,6 +148,25 @@ class Enemy(ship.Ship):
                 self.spawn_projectile(Vector2(0, 10), -45)
                 self.spawn_projectile(Vector2(0, 10), 22)
                 self.spawn_projectile(Vector2(0, 10), -22)
+# =======
+
+            self.spawn_projectile(self.offset, 0)
+        if self.type == EnemyType.ASSAULT:
+            for x in range(3):
+                self.spawn_projectile(self.offset, 0)
+        if self.type == EnemyType.REINFORCED:
+            self.spawn_projectile(self.offset, 0)
+
+            self.spawn_projectile(self.offset, 45)
+            self.spawn_projectile(self.offset, -45)
+        if self.type == EnemyType.ELITE:
+            for x in range(5):
+                self.spawn_projectile(self.offset, 0)
+                self.spawn_projectile(self.offset, 45)
+                self.spawn_projectile(self.offset, -45)
+                self.spawn_projectile(self.offset, 22)
+                self.spawn_projectile(self.offset, -22)
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82
         return None
 
     def get_type(self):
@@ -132,3 +205,19 @@ class Enemy(ship.Ship):
 
     def is_idle(self):
         return self.idle
+# <<<<<<< HEAD
+# =======
+
+    def spawn_projectile(self, offset, rotation):
+        super().spawn_projectile(offset, rotation)
+        self.fire_sound.play()
+
+    def damage(self):
+        super().damage()
+        if self.get_health() <= 0:
+            self.explode_sound.play()
+            
+    def get_score(self):
+        return self.score
+
+# >>>>>>> 5f793eafde310c1ddd42a9d03d56dc773589fb82

@@ -1,7 +1,9 @@
 import enum
 import time
 from agagla import menu
+from agagla import background
 from agagla import player_ship
+from agagla import shared_objects
 from agagla import enemy
 from agagla import death_screen as ds
 from agagla import stage_screen as sc
@@ -16,6 +18,13 @@ PLAYER_SPAWN = Vector2(1920 / 2, 1080 - 100)
 MAX_ENEMIES = 15
 
 ENEMY_IDLE_BOUNDS = 250
+from background import Background
+from enemy import Enemy
+
+PLAYER_SPAWN = Vector2(shared_objects.get_window_width() / 2, shared_objects.get_window_height() - 50)
+MAX_ENEMIES = 15
+
+ENEMY_IDLE_BOUNDS = 75
 
 
 class GameState(enum.Enum):
@@ -34,7 +43,7 @@ class GameStateManager:
         self._current_game_state = GameState.menu
         #self.font_large = pygame.font.Font("../data/fonts/arcadeclassic.regular.ttf", 40)
         self.game_score = 0
-        self.stage = 10
+        self.stage = 1
         self.lives = 3
         self.enemy_idle_left = False
         self._entities = []
@@ -152,6 +161,55 @@ class GameStateManager:
 
     def submitted_hs(self):
         self.__init__()
+        self._set_state(GameState.running)
+
+    def spawn_wave(self, wave):
+        new_enemies = []
+
+        def add_enemies(enemyType, number):
+            for i in range(0, int(number)):
+                new_enemies.append(enemyType)
+
+        if self.stage % 5 == 0:
+            stageNum = int(self.stage / 5) - 1
+            numElite = int(stageNum % 20) + 1
+            numStandard = stageNum - numElite
+            if numStandard < 0: numStandard = 0
+
+            add_enemies(enemy.EnemyType.ELITE, numElite)
+            add_enemies(enemy.EnemyType.STANDARD, numStandard)
+        elif self.stage % 4 == 0:
+            stageNum = int(self.stage / 4) - 1
+            numReinforced = stageNum / 2
+            numStandard = stageNum - numReinforced
+            if numStandard < 0: numStandard = 0
+
+            add_enemies(enemy.EnemyType.REINFORCED, numReinforced)
+            add_enemies(enemy.EnemyType.STANDARD, numStandard)
+        elif self.stage % 3 == 0:
+            stageNum = int(self.stage / 4) - 1
+            numAssault = stageNum / 2
+            numStandard = stageNum - numAssault
+            if numStandard < 0: numStandard = 0
+
+            add_enemies(enemy.EnemyType.ASSAULT, numAssault)
+            add_enemies(enemy.EnemyType.STANDARD, numStandard)
+        else:
+            add_enemies(enemy.EnemyType.STANDARD, self.stage)
+
+        num_new_enemies = min(self.stage, MAX_ENEMIES)
+
+        num_per_row = 5
+
+        for i in range(0, min(len(new_enemies), num_new_enemies)):
+            #print("i: ", i, "    modulo: ", int(i / num_per_row), "     total: ", (int(i / num_per_row) * 75))
+            row_index = int(i / num_per_row)
+            spawn_y = (row_index * 75) + 100
+            spawn_x = ((i % num_per_row) * 100) + 200
+            self.add_entity(enemy.Enemy(Vector2(spawn_x, spawn_y), new_enemies[i]))
+
+    def submitted_hs(self):
+        self.__init__()
 
     def _menu_fn(self, initial_run):
         if initial_run:
@@ -199,10 +257,31 @@ class GameStateManager:
 
         return False
 
+    def render_game_ui(self):
+        screen = pygame.display.get_surface()
+        font_small = shared_objects.get_tiny_font()
+        score_surface = font_small.render("Score   " + str(self.game_score), False, (255, 255, 255))
+        screen.blit(score_surface, (30, 10))
+
+        round_surface = font_small.render("Stage   " + str(self.stage - 1), False, (255, 255, 255))
+        screen.blit(round_surface, ((shared_objects.get_window_width() / 2) - (round_surface.get_width() / 2), 10))
+
+        life_surface = font_small.render("Lives   " + str(self.lives), False, (255, 255, 255))
+        screen.blit(life_surface, (shared_objects.get_window_width() - life_surface.get_width() - 30, 10))
+
+        return None
+
     def _render_game(self):
         pygame.display.get_surface().fill((0, 0, 0))
         for i in self._entities:
             i.render()
+
+        shared_objects.get_bg().render()
+
+        for i in self._entities:
+            i.render()
+
+        self.render_game_ui()
 
     def are_enemy_idle_left(self):
         return self.enemy_idle_left
@@ -214,8 +293,11 @@ class GameStateManager:
                 # print(i.get_pos().x)
                 if i.get_pos().x < ENEMY_IDLE_BOUNDS: self.enemy_idle_left = False
                 elif i.get_pos().x > 1920 - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
+
+                elif i.get_pos().x > shared_objects.get_window_width() - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
+
             if i.get_health() <= 0:
-                self.game_score += 10
+                self.game_score += i.get_score()
 
         for i in self.get_ships():
             if i.get_health() <= 0:
