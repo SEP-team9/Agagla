@@ -6,11 +6,12 @@ from agagla import shared_objects
 WINDOW_HEIGHT = shared_objects.get_window_height()
 WINDOW_WIDTH = shared_objects.get_window_width()
 
-WAIT_TIME_TO_END = 10
+WAIT_TIME_TO_END = 5
 TOP_LINE = (WINDOW_HEIGHT / 2) - (WINDOW_HEIGHT * 0.3)
 LEFT_COLUMN = (WINDOW_WIDTH / 2) - (WINDOW_WIDTH * 0.2)
 RIGHT_COLUMN = (WINDOW_WIDTH / 2) + (WINDOW_WIDTH * 0.2)
 MAX_NAME_LENGTH = 10
+
 
 class DeathScreen:
 
@@ -36,7 +37,6 @@ class DeathScreen:
             if self.h_scores[i][2] < self.score:
                 self.hs_rank = i
                 break
-
 
     def render(self):
         self.screen.fill((0, 0, 0))
@@ -67,10 +67,9 @@ class DeathScreen:
         if (time.time() - self.time_of_last_key > WAIT_TIME_TO_END) or len(self.name) == MAX_NAME_LENGTH:
 
             # print(self.name)
-            if self.hs_rank <= 10:
+            if self.hs_rank < 10:
                 self.hsdb.add_high_score(self.name, self.score)
             self.gsm.submitted_hs()
-
 
     def display_scores(self):
         for i in range(0, self.hs_rank):
@@ -87,7 +86,6 @@ class DeathScreen:
             self.screen.blit(hs_name, (LEFT_COLUMN, TOP_LINE + 50 * (i + 1)))
             self.screen.blit(hs_score, (RIGHT_COLUMN, TOP_LINE + 50 * (i + 1)))
 
-            
     def char_selection(self):
         if self.im.get_right():
             if not self.btn_pressed:
