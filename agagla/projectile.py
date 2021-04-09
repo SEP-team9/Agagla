@@ -2,6 +2,7 @@ from agagla import entity
 from pygame.math import Vector2
 from agagla import shared_objects
 import pygame
+import os
 
 PROJECTILE_SPEED = 10
 
@@ -9,6 +10,10 @@ PROJECTILE_SPEED = 10
 class Projectile(entity.Entity):
     def __init__(self, position, rotation, parent=None):
         super(Projectile, self).__init__(position, Vector2(10, 10), False)
+        path = os.path.join('../data/projectile.png')
+        projectile = pygame.image.load(path)
+        projectile = pygame.transform.scale(projectile, (9, 15))
+        self.image = projectile
         self.set_rot(rotation)
         self.move_vector = Vector2(0, PROJECTILE_SPEED)
         self.move_vector = self.move_vector.rotate(rotation)
@@ -37,5 +42,4 @@ class Projectile(entity.Entity):
             return
 
     def render(self):
-        self.rect = pygame.Rect(self.get_pos()[0], self.get_pos()[1], 10, 10)
-        pygame.draw.rect(pygame.display.get_surface(), (255, 0, 0), self.rect)
+        pygame.Surface.blit(pygame.display.get_surface(), self.image, (self.get_pos()[0], self.get_pos()[1]))
