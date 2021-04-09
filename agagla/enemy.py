@@ -36,7 +36,7 @@ class Enemy(ship.Ship):
         self.explode_sound = pygame.mixer.Sound(os.path.join("../data/enemy-explode.wav"))
 
         if self.type == EnemyType.STANDARD:
-            super().__init__(position, Vector2(40, 50), False )
+            super().__init__(position, Vector2(40, 50), True)
 
             path = os.path.join('../data/enemy1.png')
             enemy1 = pygame.image.load(path)
@@ -50,7 +50,7 @@ class Enemy(ship.Ship):
             self.rect.x = self.get_pos().x
             self.rect.y = self.get_pos().y
         elif self.type == EnemyType.ASSAULT:
-            super().__init__(position, Vector2(40, 50), False)
+            super().__init__(position, Vector2(40, 50), True)
             path = os.path.join('../data/enemy2.png')
             enemy2 = pygame.image.load(path)
             enemy2 = pygame.transform.scale(enemy2, (50, 50))
@@ -64,7 +64,7 @@ class Enemy(ship.Ship):
             self.rect.y = self.get_pos().y
         elif self.type == EnemyType.REINFORCED:
 
-            super().__init__(position, Vector2(40, 50), False)
+            super().__init__(position, Vector2(40, 50), True)
 
             path = os.path.join('../data/enemy3.png')
             enemy3 = pygame.image.load(path)
@@ -80,7 +80,7 @@ class Enemy(ship.Ship):
             self.rect.x = self.get_pos().x
             self.rect.y = self.get_pos().y
         else:
-            super().__init__(position, Vector2(40, 50), False)
+            super().__init__(position, Vector2(40, 50), True)
 
             path = os.path.join('../data/enemy4.png')
             enemy4 = pygame.image.load(path)
