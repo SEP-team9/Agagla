@@ -102,36 +102,34 @@ class GameStateManager:
     def spawn_wave(self, wave):
         new_enemies = []
 
-        def add_enemies(enemyType, number):
+        def add_enemies(enemy_type, number):
             for i in range(0, int(number)):
-                new_enemies.append(enemyType)
+                new_enemies.append(enemy_type)
 
         if self.stage % 5 == 0:
-            stageNum = int(self.stage / 5) - 1
-            numElite = int(stageNum % 20) + 1
-            numStandard = stageNum - numElite
-            if numStandard < 0: numStandard = 0
+            stage_num = int(self.stage / 5) - 1
+            num_elite = int(stage_num % 20) + 1
+            num_standard = stage_num - num_elite
+            if num_standard < 0: num_standard = 0
 
-            add_enemies(enemy.EnemyType.ELITE, numElite)
-            add_enemies(enemy.EnemyType.STANDARD, numStandard)
+            add_enemies(enemy.EnemyType.ELITE, num_elite)
+            add_enemies(enemy.EnemyType.STANDARD, num_standard)
         elif self.stage % 4 == 0:
-            stageNum = int(self.stage / 4) - 1
-            if stageNum <= 0: stageNum = 2
-            numReinforced = stageNum / 2
-            numStandard = stageNum - numReinforced
+            stage_num = int(self.stage / 4) - 1
+            if stage_num <= 0: stage_num = 2
+            num_reinforced = stage_num / 2
+            num_standard = stage_num - num_reinforced
 
-
-            add_enemies(enemy.EnemyType.REINFORCED, numReinforced)
-            add_enemies(enemy.EnemyType.STANDARD, numStandard)
+            add_enemies(enemy.EnemyType.REINFORCED, num_reinforced)
+            add_enemies(enemy.EnemyType.STANDARD, num_standard)
         elif self.stage % 3 == 0:
-            stageNum = int(self.stage / 4) - 1
-            if stageNum <= 0: stageNum = 2
-            numAssault = stageNum / 2
-            numStandard = stageNum - numAssault
+            stage_num = int(self.stage / 4) - 1
+            if stage_num <= 0: stage_num = 2
+            num_assault = stage_num / 2
+            num_standard = stage_num - num_assault
 
-
-            add_enemies(enemy.EnemyType.ASSAULT, numAssault)
-            add_enemies(enemy.EnemyType.STANDARD, numStandard)
+            add_enemies(enemy.EnemyType.ASSAULT, num_assault)
+            add_enemies(enemy.EnemyType.STANDARD, num_standard)
         else:
             add_enemies(enemy.EnemyType.STANDARD, self.stage)
 
@@ -140,7 +138,6 @@ class GameStateManager:
         num_per_row = 5
 
         for i in range(0, min(len(new_enemies), num_new_enemies)):
-            #print("i: ", i, "    modulo: ", int(i / num_per_row), "     total: ", (int(i / num_per_row) * 75))
             row_index = int(i / num_per_row)
             spawn_y = (row_index * 75) + 100
             spawn_x = ((i % num_per_row) * 100) + 200
@@ -233,12 +230,11 @@ class GameStateManager:
                 elif i.get_pos().x > shared_objects.get_window_width() - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
 
             if i.is_dropping():
-              num_dropping += 1
+                num_dropping += 1
 
             if i.get_health() <= 0:
                 self.game_score += i.get_score()
 
-        #TODO: make num_dropping change with stage num
         if num_dropping < 2:
             if len(self.get_enemies()) > 0:
                 self.get_enemies()[random.randint(0, len(self.get_enemies())-1)].drop()
