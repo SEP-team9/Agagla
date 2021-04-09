@@ -17,10 +17,8 @@ class DeathScreen:
 
     def __init__(self):
         self.screen = pygame.display.get_surface()
-
         self.font_large = shared_objects.get_large_font()
         self.font_small = shared_objects.get_small_font()
-
         self.last_time = 0
         self.blink = False
         self.gsm = shared_objects.get_gsm()
@@ -65,8 +63,6 @@ class DeathScreen:
             self.char_selection()
 
         if (time.time() - self.time_of_last_key > WAIT_TIME_TO_END) or len(self.name) == MAX_NAME_LENGTH:
-
-            # print(self.name)
             if self.hs_rank < 10:
                 self.hsdb.add_high_score(self.name, self.score)
             self.gsm.submitted_hs()

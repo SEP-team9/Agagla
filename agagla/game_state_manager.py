@@ -1,18 +1,14 @@
 import enum
 import time
+import random
 from agagla import menu
-from agagla import background
 from agagla import player_ship
 from agagla import shared_objects
 from agagla import enemy
 from agagla import death_screen as ds
 from pygame.math import Vector2
-from agagla import __main__ as main
 
 import pygame
-
-from background import Background
-from enemy import Enemy
 
 PLAYER_SPAWN = Vector2(shared_objects.get_window_width() / 2, shared_objects.get_window_height() - 50)
 MAX_ENEMIES = 15
@@ -43,6 +39,7 @@ class GameStateManager:
         self.states_switch = {GameState.menu: self._menu_fn,
                               GameState.running: self._running_fn,
                               GameState.game_over: self._game_over_fn}
+
         self._menu = None
         self._death_screen = None
 
@@ -226,6 +223,8 @@ class GameStateManager:
 
     def manage_game(self):
 
+        num_dropping = 0
+
         for i in self.get_enemies():
             if i.is_idle():
                 # print(i.get_pos().x)
@@ -233,8 +232,16 @@ class GameStateManager:
 
                 elif i.get_pos().x > shared_objects.get_window_width() - ENEMY_IDLE_BOUNDS: self.enemy_idle_left = True
 
+            if i.is_dropping():
+              num_dropping += 1
+
             if i.get_health() <= 0:
                 self.game_score += i.get_score()
+
+        #TODO: make num_dropping change with stage num
+        if num_dropping < 2:
+            if len(self.get_enemies()) > 0:
+                self.get_enemies()[random.randint(0, len(self.get_enemies())-1)].drop()
 
         for i in self.get_ships():
             if i.get_health() <= 0:

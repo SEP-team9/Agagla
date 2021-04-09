@@ -11,7 +11,9 @@ def init():
     shared_objects.init_gsm()
     shared_objects.init_im()
     shared_objects.init_hsdb()
+
     shared_objects.init_bg()
+
 
     global gsm, im, hsdb
     gsm = shared_objects.get_gsm()
