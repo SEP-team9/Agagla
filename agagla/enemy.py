@@ -36,11 +36,11 @@ class Enemy(ship.Ship):
         self.explode_sound = pygame.mixer.Sound(os.path.join("../data/enemy-explode.wav"))
 
         if self.type == EnemyType.STANDARD:
-            super().__init__(position, Vector2(40, 50), True)
+            super().__init__(position, Vector2(20, 30), True)
 
             path = os.path.join('../data/enemy1.png')
             enemy1 = pygame.image.load(path)
-            enemy1 = pygame.transform.scale(enemy1, (50, 50))
+            enemy1 = pygame.transform.scale(enemy1, (30, 30))
             self.image = enemy1
             self.health = 1
             self.score = 5
@@ -50,10 +50,10 @@ class Enemy(ship.Ship):
             self.rect.x = self.get_pos().x
             self.rect.y = self.get_pos().y
         elif self.type == EnemyType.ASSAULT:
-            super().__init__(position, Vector2(40, 50), True)
+            super().__init__(position, Vector2(40, 30), True)
             path = os.path.join('../data/enemy2.png')
             enemy2 = pygame.image.load(path)
-            enemy2 = pygame.transform.scale(enemy2, (50, 50))
+            enemy2 = pygame.transform.scale(enemy2, (30, 30))
             self.image = enemy2
             self.health = 1
             self.score = 10
@@ -64,11 +64,11 @@ class Enemy(ship.Ship):
             self.rect.y = self.get_pos().y
         elif self.type == EnemyType.REINFORCED:
 
-            super().__init__(position, Vector2(40, 50), True)
+            super().__init__(position, Vector2(20, 30), True)
 
             path = os.path.join('../data/enemy3.png')
             enemy3 = pygame.image.load(path)
-            enemy3 = pygame.transform.scale(enemy3, (50, 50))
+            enemy3 = pygame.transform.scale(enemy3, (30, 30))
             self.image = enemy3
             self.health = 2
 
@@ -80,11 +80,11 @@ class Enemy(ship.Ship):
             self.rect.x = self.get_pos().x
             self.rect.y = self.get_pos().y
         else:
-            super().__init__(position, Vector2(40, 50), True)
+            super().__init__(position, Vector2(20, 30), True)
 
             path = os.path.join('../data/enemy4.png')
             enemy4 = pygame.image.load(path)
-            enemy4 = pygame.transform.scale(enemy4, (50, 50))
+            enemy4 = pygame.transform.scale(enemy4, (30, 30))
             self.image = enemy4
             self.health = 3
 
