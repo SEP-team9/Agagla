@@ -36,9 +36,6 @@ class Entity:
             if newX < self._size[0]: newX = self._size[0]
             elif newX > shared_objects.get_window_width() - self._size[0]: newX = shared_objects.get_window_width() - self._size[0]
 
-            if newY < self._size[1]: newY = self._size[1]
-            elif newY > shared_objects.get_window_height() - self._size[1]: newY = shared_objects.get_window_height() - self._size[1]
-
         self.set_pos(Vector2(newX, newY))
 
         if self._position[1] > shared_objects.get_window_height()+self._size[1]: self._position[1] = -self._size[1]
