@@ -115,8 +115,6 @@ class GameStateManager:
 
         if self.stage % 5 == 0:
             stage_num = int(self.stage / 5) - 1
-            if stage_num <= 0:
-                stage_num = 2
             num_elite = int(stage_num % 20) + 1
             num_standard = stage_num - num_elite
             if num_standard < 0: num_standard = 0
@@ -142,6 +140,9 @@ class GameStateManager:
             add_enemies(enemy.EnemyType.ASSAULT, num_assault)
             add_enemies(enemy.EnemyType.STANDARD, num_standard)
         else:
+            add_enemies(enemy.EnemyType.STANDARD, self.stage)
+
+        if len(new_enemies) == 0:
             add_enemies(enemy.EnemyType.STANDARD, self.stage)
 
         num_new_enemies = min(self.stage, MAX_ENEMIES)
