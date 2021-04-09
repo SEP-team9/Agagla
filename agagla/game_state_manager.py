@@ -6,6 +6,7 @@ from agagla import player_ship
 from agagla import shared_objects
 from agagla import enemy
 from agagla import death_screen as ds
+from agagla import stage_screen
 from pygame.math import Vector2
 
 import pygame
@@ -15,12 +16,15 @@ MAX_ENEMIES = 15
 
 ENEMY_IDLE_BOUNDS = 75
 
+INTERSTAGE_TIME = 5
+
 
 class GameState(enum.Enum):
     menu = 1
     running = 2
-    game_over = 3
-    exit = 4
+    interstage = 3
+    game_over = 4
+    exit = 5
 
 
 class GameStateManager:
@@ -32,16 +36,19 @@ class GameStateManager:
         self._current_game_state = GameState.menu
         self.game_score = 0
         self.stage = 0
+        self.interstage_end = 0
         self.lives = 3
         self.enemy_idle_left = False
         self._entities = []
         self._last_tick_time = time.time()
         self.states_switch = {GameState.menu: self._menu_fn,
                               GameState.running: self._running_fn,
-                              GameState.game_over: self._game_over_fn}
+                              GameState.game_over: self._game_over_fn,
+                              GameState.interstage: self._interstage_fn}
 
         self._menu = None
         self._death_screen = None
+        self._stage_screen = None
 
     def _set_state(self, state):
         self._current_game_state = state
@@ -108,6 +115,8 @@ class GameStateManager:
 
         if self.stage % 5 == 0:
             stage_num = int(self.stage / 5) - 1
+            if stage_num <= 0:
+                stage_num = 2
             num_elite = int(stage_num % 20) + 1
             num_standard = stage_num - num_elite
             if num_standard < 0: num_standard = 0
@@ -116,7 +125,8 @@ class GameStateManager:
             add_enemies(enemy.EnemyType.STANDARD, num_standard)
         elif self.stage % 4 == 0:
             stage_num = int(self.stage / 4) - 1
-            if stage_num <= 0: stage_num = 2
+            if stage_num <= 0:
+                stage_num = 2
             num_reinforced = stage_num / 2
             num_standard = stage_num - num_reinforced
 
@@ -124,7 +134,8 @@ class GameStateManager:
             add_enemies(enemy.EnemyType.STANDARD, num_standard)
         elif self.stage % 3 == 0:
             stage_num = int(self.stage / 4) - 1
-            if stage_num <= 0: stage_num = 2
+            if stage_num <= 0:
+                stage_num = 2
             num_assault = stage_num / 2
             num_standard = stage_num - num_assault
 
@@ -156,6 +167,22 @@ class GameStateManager:
         self._tick()
         self._render_game()
 
+    def _interstage_fn(self, initial_run):
+        if initial_run:
+            self.interstage_end = time.time()+INTERSTAGE_TIME
+            self._stage_screen = stage_screen.StageScreen()
+
+        self._tick()
+        self._render_game()
+        self._stage_screen.render()
+
+        if time.time() > self.interstage_end:
+            self._set_state(GameState.running)
+            if self.get_player_ship() is None:
+                self.add_entity(player_ship.PlayerShip(Vector2(PLAYER_SPAWN.x, PLAYER_SPAWN.y)))
+            else:
+                self.spawn_wave(self.stage)
+
     def _game_over_fn(self, initial_run):
         if initial_run:
             self._death_screen = ds.DeathScreen()
@@ -166,8 +193,8 @@ class GameStateManager:
         if self._last_game_state == self._current_game_state:
             self.states_switch[self._current_game_state](False)
         else:
-            self.states_switch[self._current_game_state](True)
             self._last_game_state = self._current_game_state
+            self.states_switch[self._current_game_state](True)
 
     def _force_tick(self):
         while not self._tick():
@@ -245,13 +272,13 @@ class GameStateManager:
 
         ps = self.get_player_ship()
 
-        if ps is None:
+        if ps is None and self._current_game_state == GameState.running:
             self.lives -= 1
-            self.add_entity(player_ship.PlayerShip(Vector2(PLAYER_SPAWN.x, PLAYER_SPAWN.y)))
+            self._set_state(GameState.interstage)
 
         if self.lives <= 0:
             self._set_state(GameState.game_over)
-        elif len(self.get_enemies()) <= 0:
+        elif len(self.get_enemies()) <= 0 and self._current_game_state == GameState.running:
             self.stage += 1
-            self.spawn_wave(self.stage)
+            self._set_state(GameState.interstage)
 
