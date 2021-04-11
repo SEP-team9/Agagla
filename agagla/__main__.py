@@ -53,7 +53,7 @@ if __name__ == '__main__':
                          (shared_objects.get_window_height()-enemies.get_height())/2))
 
     pygame.display.update()
-    time.sleep(10)
+    time.sleep(5)
 
     controls = pygame.image.load(os.path.join("../data/controls.png"))
     pygame.Surface.blit(pygame.display.get_surface(),
