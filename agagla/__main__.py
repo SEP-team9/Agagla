@@ -46,6 +46,24 @@ if __name__ == '__main__':
     pygame.display.update()
     time.sleep(5)
 
+    enemies = pygame.image.load(os.path.join("../data/enemies.png"))
+    pygame.Surface.blit(pygame.display.get_surface(),
+                        enemies,
+                        ((shared_objects.get_window_width()-enemies.get_width())/2,
+                         (shared_objects.get_window_height()-enemies.get_height())/2))
+
+    pygame.display.update()
+    time.sleep(5)
+
+    controls = pygame.image.load(os.path.join("../data/controls.png"))
+    pygame.Surface.blit(pygame.display.get_surface(),
+                        controls,
+                        ((shared_objects.get_window_width()-controls.get_width())/2,
+                         (shared_objects.get_window_height()-controls.get_height())/2))
+
+    pygame.display.update()
+    time.sleep(5)
+
     while gsm.get_state() != game_state_manager.GameState.exit:
         gsm.game_loop()
         im.handle_events()
