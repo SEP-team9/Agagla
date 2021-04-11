@@ -38,6 +38,7 @@ class GameStateManager:
         self.stage = 0
         self.interstage_end = 0
         self.lives = 3
+        self.lives_added = 0
         self.enemy_idle_left = False
         self._entities = []
         self._last_tick_time = time.time()
@@ -270,6 +271,15 @@ class GameStateManager:
         for i in self.get_ships():
             if i.get_health() <= 0:
                 self._entities.remove(i)
+
+        if self.game_score >= 500 and self.lives_added == 0:
+            self.lives += 1
+            self.lives_added += 1
+
+        if self.lives_added != 0 and self.game_score >= (self.lives_added * 1000) and \
+                self.lives_added <= (self.game_score / 1000):
+            self.lives += 1
+            self.lives_added += 1
 
         ps = self.get_player_ship()
 
